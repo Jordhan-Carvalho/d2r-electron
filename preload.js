@@ -8,3 +8,7 @@ contextBridge.exposeInMainWorld('versions', {
   // we can also expose variables, not just functions
 })
 
+
+contextBridge.exposeInMainWorld('mainApi', {
+  setReminderConfig: (reminderConfig) => ipcRenderer.send('set-reminder-config', reminderConfig)
+})

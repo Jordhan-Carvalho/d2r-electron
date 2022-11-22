@@ -1,9 +1,32 @@
-const information = document.getElementById('info')
-information.innerText = `This app is using Chrome (v${window.versions.chrome()}), Node.js (v${window.versions.node()}), and Electron (v${window.versions.electron()})`
+const remindersConfigurationListener = (reminderName) => {
+  console.log("Dentro do config listener", reminderName)
+  const checkBox = document.getElementById(`${reminderName}-checkbox`) 
+  checkBox.addEventListener('change', () => {
+    const reminderConfigListener = {name: reminderName, values: {}}
+    if (checkBox.checked) {
+      reminderConfigListener.values = { active: true }
+    } else {
+      reminderConfigListener.values = { active: false }
+    }
+    window.mainApi.setReminderConfig(reminderConfigListener)
+  })
 
-const func = async () => {
-  const response = await window.versions.ping()
-  console.log(response) // prints out 'pong'
+  const delayElem = document.getElementById(`${reminderName}-delay`)
+  const delay = delayElem ? Number(delayElem.value) : 0
+  const reminderConfig = {name: reminderName, values: { active: checkBox.checked, delay }}
+  window.mainApi.setReminderConfig(reminderConfig)
+
+
+  delay.addEventListener('change', () => {
+    const reminderConfigListener = {name: reminderName, values: {}}
+    reminderConfigListener.values = { delay: Number(delay.value) }
+    window.mainApi.setReminderConfig(reminderConfigListener)
+  })
 }
 
-func()
+
+remindersConfigurationListener("stack")
+remindersConfigurationListener("midrunes")
+remindersConfigurationListener("bountyrunes")
+remindersConfigurationListener("smoke")
+remindersConfigurationListener("neutral")

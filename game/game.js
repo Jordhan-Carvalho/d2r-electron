@@ -1,77 +1,90 @@
-const piru = () => console.log("hi")
+const sound = require("sound-play");
+
+const remindersConfig = {
+}
+
+const checkForStack = (gameTime) => {
+  console.log("checkForStack called", remindersConfig.stack)
+  const stackTime = 60
+  const stackAlertTime = stackTime - remindersConfig['stack'].delay
+
+  if ((gameTime-stackAlertTime)%stackTime === 0) {
+    console.log("Inside the if checkStack", { stackAlertTime, stackTime})
+    sound.play("../sound/stack.mp3");
+  }
+} 
+
+const checkForMidRunes = (gameTime) => {
+  console.log("checkMidRunes called")
+  const midRunesTime = 120;
+  const midRunesAlertTime = midRunesTime - remindersConfig['midrunes'].delay
+
+  if ((gameTime-midRunesAlertTime)%midRunesTime === 0) {
+    console.log("Inside the sound midrunes", {midRunesTime, midRunesAlertTime})
+    sound.play("../sound/mid-rune.mp3");
+  }
+}
+
+const checkForBountyRunes = (gameTime) => {
+  console.log("checkBountyRunes called")
+  const bountyRunesTime = 180;
+  const bountyRunesAlertTime = bountyRunesTime - remindersConfig['bountyrunes'].delay
+
+  if ((gameTime-bountyRunesAlertTime)%bountyRunesTime === 0) {
+    console.log("Inside the sound bounty runes", {bountyRunesTime, bountyRunesAlertTime})
+    sound.play("../sound/bounty-runes.mp3");
+  }
+}
+
+const checkNeutralItems = (gameTime) => {
+  const neutralItemsTime = [420, 1020, 1620, 2200, 3600]
+
+  for (let i = 0; i < neutralItemsTime.length; i++) {
+    if (gameTime === neutralItemsTime[i]) {
+      sound.play(`../sound/neutralTier${i+1}.mp3`);
+    }
+  }
+}
+
+const checkForSmoke = (gameTime) => {
+  const smokeTime = 420
+  const smokeAlertTime = smokeTime - remindersConfig['smoke'].delay
+
+  if((gameTime-smokeAlertTime)%smokeTime === 0) {
+    sound.play("../sound/smoke.mp3");
+  }
+
+}
 
 const onNewGameEvent= (gameEvent) => {
-  console.log("GAME EVENTS")
-  /* e.events.map(event => {
-    switch (event.name) {
-      case 'clock_time_changed':
-        const parsedClockInfo = JSON.parse(event.data);
-        console.log("Clock time", parsedClockInfo.clock_time)
-        // TODO: there should be a check if game already started
-        if (this.remindersConfig.stack.active) {
-          this.checkForStack(parsedClockInfo.clock_time)
-        }
-
-        if (this.remindersConfig.midrunes.active) {
-          this.checkForMidRunes(parsedClockInfo.clock_time)
-        }
-
-        if (this.remindersConfig.bountyrunes.active) {
-          this.checkForBountyRunes(parsedClockInfo.clock_time)
-        }
+  console.log("ReminderConfig object", remindersConfig)
+  if (gameEvent.map.game_state === 'DOTA_GAMERULES_STATE_GAME_IN_PROGRESS') {
+    const gameTime = gameEvent.map.game_time
+    if (remindersConfig.stack.active) {
+      checkForStack(gameTime)
     }
-  }); */
+    if(remindersConfig.midrunes.active) {
+      checkForMidRunes(gameTime)
+    }
+    if(remindersConfig.bountyrunes.active) {
+      checkForBountyRunes(gameTime)
+    }
+    if (remindersConfig.neutral.active) {
+      checkNeutralItems(gameTime)
+    }
+    if (remindersConfig.smoke.active) {
+      checkForSmoke(gameTime)
+    }
+  }
+}
+
+const handleReminderConfig = (event, newReminderConfig) => {
+  remindersConfig[newReminderConfig.name] = {...remindersConfig[newReminderConfig.name], ...newReminderConfig.values }
+  console.log("handleConfig chamado", { newReminderConfig, remindersConfig })
 }
 
 module.exports = {
-  aff: piru,
-  onNewGameEvent
+  onNewGameEvent,
+  handleReminderConfig
 }
 
-/* DOTA_GameState
-        /// Undefined
-        Undefined,
-
-        /// Disconnected
-        DOTA_GAMERULES_STATE_DISCONNECT,
-
-        /// Game is in progress
-        DOTA_GAMERULES_STATE_GAME_IN_PROGRESS,
-
-        /// Players are currently selecting heroes
-        DOTA_GAMERULES_STATE_HERO_SELECTION,
-
-        /// Game is starting
-        DOTA_GAMERULES_STATE_INIT,
-
-        /// Game is ending
-        DOTA_GAMERULES_STATE_LAST,
-
-        /// Game has ended, post game scoreboard
-        DOTA_GAMERULES_STATE_POST_GAME,
-
-        /// Game has started, pre game preparations
-        DOTA_GAMERULES_STATE_PRE_GAME,
-
-        /// Players are selecting/banning heroes
-        DOTA_GAMERULES_STATE_STRATEGY_TIME,
-
-        /// Waiting for everyone to connect and load
-        DOTA_GAMERULES_STATE_WAIT_FOR_PLAYERS_TO_LOAD,
-
-        /// Game is a custom game
-        DOTA_GAMERULES_STATE_CUSTOM_GAME_SETUP */
-
-/* type mapEvent struct {
-	Name      string `json:"name"`
-	ClockTime int    `json:"clock_time"`
-	GameState string `json:"game_state"` 
-  WardPurchaseCooldown int `json:"ward_purchase_cooldown"`
-  RadiantScore int `json:"radiant_score"`
-  DireScore int `json:"dire_score"`
-  Paused bool `json:"paused"`
-}
-
-type GameEvents struct {
-	Map mapEvent `json:"map"`
-} */

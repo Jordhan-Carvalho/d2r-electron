@@ -14,15 +14,12 @@ const startServer = () => {
       const body = []
       req.on('data', chunk => {
         body.push(chunk)
-        console.log('A chunk of data has arrived: ', chunk);
       });
 
       req.on('end', () => {
         const jsonRespString = body.join()
         const gameEvent = JSON.parse(jsonRespString)
         game.onNewGameEvent(gameEvent) 
-
-        console.log('Incoming Data', gameEvent);
       })
 
       res.write("Success")

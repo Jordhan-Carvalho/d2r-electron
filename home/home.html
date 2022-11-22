@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
+    <meta
+      http-equiv="X-Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
+    <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> -->
+    <link rel="stylesheet" href="../materialize/css/materialize.min.css" />
+    <link rel="stylesheet" href="../reset.css" />
+    <link rel="stylesheet" href="./home.css" />
+    <title>Dota 2 Reminders</title>
+  </head>
+  <body>
+    <!-- -------------------------------- Header ------------------------------- -->
+
+    <!-- <header id="header" class="app-header">
+<img src="../../img/header_icon.svg" />
+<h1>Dota 2 Reminders / in-game</h1>
+<div class="window-controls-group">
+<button id="minimizeButton" class="window-control window-control-minimize" />
+<button id="maximizeButton" class="window-control window-control-maximize" />
+<button id="closeButton" class="window-control window-control-close" />
+</div>
+</header> -->
+
+    <!-- -------------------------------- Main ------------------------------- -->
+    <main>
+      <div class="alerts-container">
+        <h2>Set your reminders:</h2>
+        <!-- Switch -->
+
+        <div class="checkbox-container" >
+          <div class="switch">
+            <label>
+              Off
+              <input type="checkbox" id="stack-checkbox">
+              <span class="lever"></span>
+              On
+            </label>
+          </div>
+          <p>Stack Reminder</p>
+        </div>
+
+        <!-- <div class="checkbox-container" >
+          <div class="button b2" id="button-13">
+            <input type="checkbox" class="checkbox" id="neutral-checkbox" />
+            <div class="knobs">
+              <span></span>
+            </div>
+            <div class="layer"></div>
+          </div>
+          <p>Neutral Items Reminder</p>
+        </div> -->
+
+
+        <div class="checkbox-container" >
+          <div class="switch">
+            <label>
+              Off
+              <input type="checkbox" id="midrunes-checkbox">
+              <span class="lever"></span>
+              On
+            </label>
+          </div>
+          <p>Mid Runes Reminder</p>
+        </div>
+
+        <div class="checkbox-container" >
+          <div class="switch">
+            <label>
+              Off
+              <input type="checkbox" id="bountyrunes-checkbox">
+              <span class="lever"></span>
+              On
+            </label>
+          </div>
+          <p>Bounty Runes Reminder</p>
+        </div>
+
+      </div>
+
+      <!-- -------------------------------- Left Container ------------------------------- -->
+      <div class="left-container">
+        <div class="plus-container">
+          <h2>Set the reminder delay:</h2>
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="stack-delay" type="number" class="validate" value="13">
+              <label for="stack-delay">Stack Delay</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="midrunes-delay" type="number" class="validate" value="1">
+              <label for="midrunes-delay">Mid Runes Delay</label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="neutral-delay" type="number" class="validate" value="0">
+              <label for="neutral-delay">Neutral Items Delay</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="bountyrunes-delay" type="number" class="validate" value="2">
+              <label for="bountyrunes-delay">Bounty Runes Delay</label>
+            </div>
+          </div>
+        </div>
+        <div id="ad-div" class="ad-container">
+        </div>
+      </div>
+    </main>
+    <script src="../materialize/js/materialize.min.js"></script>
+    <script src="./home.js"></script>
+  </body>
+</html>

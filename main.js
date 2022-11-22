@@ -1,24 +1,27 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const server = require("./server.js")
+const game = require("./game/game.js")
 
 const createWindow = () => {
   const win = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 450,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
   })
 
-  win.loadFile('./home/index.html')
+  win.loadFile('./home/home.html')
 }
 
 // Local http server that will listen to the dota game events
 
+
 // Basically the same as app.on('ready')
 app.whenReady().then(() => {
   server.startServer()
+  ipcMain.on('set-reminder-config', game.handleReminderConfig)
   createWindow()
 })
 

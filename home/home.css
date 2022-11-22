@@ -1,0 +1,49 @@
+body {
+  height: 100vh;
+  padding: 10px;
+  font-size: 14px;
+}
+
+main {
+  height: 100%;
+  display: flex;
+}
+
+.alerts-container{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 50%;
+  background-color: green;
+  padding-right: 10px;
+}
+
+.left-container{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: yellow;
+  width: 50%;
+}
+
+.plus-container{
+  height: 50%;
+  background-color: purple;
+}
+
+.ads-container{
+  background-color: red;
+  height: 50%;
+}
+
+.checkbox-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+input[type="number"]
+{
+    font-size:14px!important;
+}
