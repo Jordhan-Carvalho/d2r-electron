@@ -1,0 +1,15 @@
+{
+  "name": "d2r-electron",
+  "version": "1.0.0",
+  "description": "Dota 2 Reminders - Electron",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "author": "Jordhan Carvalho",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^21.3.0"
+  }
+}
