@@ -1,5 +1,4 @@
 const remindersConfigurationListener = (reminderName) => {
-  console.log("Dentro do config listener", reminderName)
   const checkBox = document.getElementById(`${reminderName}-checkbox`) 
   checkBox.addEventListener('change', () => {
     const reminderConfigListener = {name: reminderName, values: {}}
@@ -30,3 +29,4 @@ remindersConfigurationListener("midrunes")
 remindersConfigurationListener("bountyrunes")
 remindersConfigurationListener("smoke")
 remindersConfigurationListener("neutral")
+remindersConfigurationListener("ward")

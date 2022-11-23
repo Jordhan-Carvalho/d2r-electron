@@ -1,40 +1,42 @@
 const sound = require("sound-play");
+const path = require("path");
 
 let BUY_WARDS_LAST_CALL = 0
-
+let LAST_GAME_TIME = 0
 const remindersConfig = {
 }
 
 const checkForStack = (gameTime) => {
-  console.log("checkForStack called", remindersConfig.stack)
+  // console.log("checkForStack called", { stack:remindersConfig.stack, gameTime})
   const stackTime = 60
   const stackAlertTime = stackTime - remindersConfig['stack'].delay
 
   if ((gameTime-stackAlertTime)%stackTime === 0) {
-    console.log("Inside the if checkStack", { stackAlertTime, stackTime})
-    sound.play("../sound/stack.mp3");
+    console.log("Inside the if checkStack", { gameTime, stackAlertTime})
+    const filePath = path.join(__dirname, "../sound/stack.mp3");
+    sound.play(filePath);
   }
 } 
 
 const checkForMidRunes = (gameTime) => {
-  console.log("checkMidRunes called")
   const midRunesTime = 120;
   const midRunesAlertTime = midRunesTime - remindersConfig['midrunes'].delay
 
   if ((gameTime-midRunesAlertTime)%midRunesTime === 0) {
-    console.log("Inside the sound midrunes", {midRunesTime, midRunesAlertTime})
-    sound.play("../sound/mid-rune.mp3");
+    console.log("Inside the sound midrunes", {gameTime, midRunesAlertTime})
+    const filePath = path.join(__dirname, "../sound/mid-rune.mp3");
+    sound.play(filePath);
   }
 }
 
 const checkForBountyRunes = (gameTime) => {
-  console.log("checkBountyRunes called")
   const bountyRunesTime = 180;
   const bountyRunesAlertTime = bountyRunesTime - remindersConfig['bountyrunes'].delay
 
   if ((gameTime-bountyRunesAlertTime)%bountyRunesTime === 0) {
-    console.log("Inside the sound bounty runes", {bountyRunesTime, bountyRunesAlertTime})
-    sound.play("../sound/bounty-runes.mp3");
+    console.log("Inside the sound bounty runes", {gameTime, bountyRunesAlertTime})
+    const filePath = path.join(__dirname, "../sound/bounty-runes.mp3");
+    sound.play(filePath);
   }
 }
 
@@ -43,7 +45,8 @@ const checkNeutralItems = (gameTime) => {
 
   for (let i = 0; i < neutralItemsTime.length; i++) {
     if (gameTime === neutralItemsTime[i]) {
-      sound.play(`../sound/neutralTier${i+1}.mp3`);
+      const filePath = path.join(__dirname, `../sound/neutralTier${i+1}.mp3`);
+      sound.play(filePath);
     }
   }
 }
@@ -53,7 +56,8 @@ const checkForSmoke = (gameTime) => {
   const smokeAlertTime = smokeTime - remindersConfig['smoke'].delay
 
   if((gameTime-smokeAlertTime)%smokeTime === 0) {
-    sound.play("../sound/smoke.mp3");
+    const filePath = path.join(__dirname, "../sound/smoke.mp3");
+    sound.play(filePath);
   }
 
 }
@@ -63,17 +67,19 @@ const checkForWards = (gameTime, wardCd) => {
   const timeBetweenCalls = 30
 
   if (wardCd === 0 && (BUY_WARDS_LAST_CALL+timeBetweenCalls) <= gameTime) {
-    sound.play("../sound/wards.mp3");
+    const filePath = path.join(__dirname, "../sound/wards.mp3");
+    sound.play(filePath);
     BUY_WARDS_LAST_CALL = gameTime
   }
   
 }
 
-const onNewGameEvent= (gameEvent) => {
-  console.log("ReminderConfig object", remindersConfig)
-  if (gameEvent.map.game_state === 'DOTA_GAMERULES_STATE_GAME_IN_PROGRESS') {
-    const gameTime = gameEvent.map.game_time
+const onNewGameEvent= async (gameEvent) => {
+  if (gameEvent.map && gameEvent.map.game_state === 'DOTA_GAMERULES_STATE_GAME_IN_PROGRESS') {
+    const gameTime = gameEvent.map.clock_time
     const wardsPurchaseCd = gameEvent.map.ward_purchase_cooldown
+    if (LAST_GAME_TIME === gameTime) return
+    if (LAST_GAME_TIME > gameTime) LAST_GAME_TIME = 0
 
     if (remindersConfig.stack.active) {
       checkForStack(gameTime)
@@ -93,12 +99,13 @@ const onNewGameEvent= (gameEvent) => {
     if (remindersConfig.ward.active) {
       checkForWards(gameTime, wardsPurchaseCd)
     }
+
+    LAST_GAME_TIME = gameTime
   }
 }
 
 const handleReminderConfig = (event, newReminderConfig) => {
   remindersConfig[newReminderConfig.name] = {...remindersConfig[newReminderConfig.name], ...newReminderConfig.values }
-  console.log("handleConfig chamado", { newReminderConfig, remindersConfig })
 }
 
 module.exports = {
