@@ -34,8 +34,6 @@
     <main>
       <div class="alerts-container">
         <h2>Set your reminders:</h2>
-        <!-- Switch -->
-
         <div class="checkbox-container" >
           <div class="switch">
             <label>
@@ -45,20 +43,8 @@
               On
             </label>
           </div>
-          <p>Stack Reminder</p>
+          <p>Stack</p>
         </div>
-
-        <!-- <div class="checkbox-container" >
-          <div class="button b2" id="button-13">
-            <input type="checkbox" class="checkbox" id="neutral-checkbox" />
-            <div class="knobs">
-              <span></span>
-            </div>
-            <div class="layer"></div>
-          </div>
-          <p>Neutral Items Reminder</p>
-        </div> -->
-
 
         <div class="checkbox-container" >
           <div class="switch">
@@ -69,7 +55,7 @@
               On
             </label>
           </div>
-          <p>Mid Runes Reminder</p>
+          <p>Mid Runes</p>
         </div>
 
         <div class="checkbox-container" >
@@ -81,7 +67,43 @@
               On
             </label>
           </div>
-          <p>Bounty Runes Reminder</p>
+          <p>Bounty Runes</p>
+        </div>
+
+        <div class="checkbox-container" >
+          <div class="switch">
+            <label>
+              Off
+              <input type="checkbox" id="neutral-checkbox">
+              <span class="lever"></span>
+              On
+            </label>
+          </div>
+          <p>Neutral Items</p>
+        </div>
+
+        <div class="checkbox-container" >
+          <div class="switch">
+            <label>
+              Off
+              <input type="checkbox" id="smoke-checkbox">
+              <span class="lever"></span>
+              On
+            </label>
+          </div>
+          <p>Smoke</p>
+        </div>
+
+        <div class="checkbox-container" >
+          <div class="switch">
+            <label>
+              Off
+              <input type="checkbox" id="ward-checkbox">
+              <span class="lever"></span>
+              On
+            </label>
+          </div>
+          <p>Wards</p>
         </div>
 
       </div>
@@ -89,30 +111,28 @@
       <!-- -------------------------------- Left Container ------------------------------- -->
       <div class="left-container">
         <div class="plus-container">
-          <h2>Set the reminder delay:</h2>
+          <h2>Set the reminder delay (Seconds):</h2>
           <div class="row">
             <div class="input-field col s6">
               <input id="stack-delay" type="number" class="validate" value="13">
-              <label for="stack-delay">Stack Delay</label>
+              <label for="stack-delay">Stack</label>
             </div>
             <div class="input-field col s6">
               <input id="midrunes-delay" type="number" class="validate" value="1">
-              <label for="midrunes-delay">Mid Runes Delay</label>
+              <label for="midrunes-delay">Mid Runes</label>
             </div>
           </div>
 
           <div class="row">
             <div class="input-field col s6">
               <input id="neutral-delay" type="number" class="validate" value="0">
-              <label for="neutral-delay">Neutral Items Delay</label>
+              <label for="neutral-delay">Neutral Items</label>
             </div>
             <div class="input-field col s6">
               <input id="bountyrunes-delay" type="number" class="validate" value="2">
-              <label for="bountyrunes-delay">Bounty Runes Delay</label>
+              <label for="bountyrunes-delay">Bounty Runes</label>
             </div>
           </div>
-        </div>
-        <div id="ad-div" class="ad-container">
         </div>
       </div>
     </main>

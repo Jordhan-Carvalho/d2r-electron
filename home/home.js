@@ -17,9 +17,9 @@ const remindersConfigurationListener = (reminderName) => {
   window.mainApi.setReminderConfig(reminderConfig)
 
 
-  delay.addEventListener('change', () => {
+  delayElem && delayElem.addEventListener('change', () => {
     const reminderConfigListener = {name: reminderName, values: {}}
-    reminderConfigListener.values = { delay: Number(delay.value) }
+    reminderConfigListener.values = { delay: Number(delayElem.value) }
     window.mainApi.setReminderConfig(reminderConfigListener)
   })
 }

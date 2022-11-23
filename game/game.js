@@ -1,5 +1,7 @@
 const sound = require("sound-play");
 
+let BUY_WARDS_LAST_CALL = 0
+
 const remindersConfig = {
 }
 
@@ -56,10 +58,23 @@ const checkForSmoke = (gameTime) => {
 
 }
 
+const checkForWards = (gameTime, wardCd) => {
+  if (BUY_WARDS_LAST_CALL > gameTime) BUY_WARDS_LAST_CALL = 0
+  const timeBetweenCalls = 30
+
+  if (wardCd === 0 && (BUY_WARDS_LAST_CALL+timeBetweenCalls) <= gameTime) {
+    sound.play("../sound/wards.mp3");
+    BUY_WARDS_LAST_CALL = gameTime
+  }
+  
+}
+
 const onNewGameEvent= (gameEvent) => {
   console.log("ReminderConfig object", remindersConfig)
   if (gameEvent.map.game_state === 'DOTA_GAMERULES_STATE_GAME_IN_PROGRESS') {
     const gameTime = gameEvent.map.game_time
+    const wardsPurchaseCd = gameEvent.map.ward_purchase_cooldown
+
     if (remindersConfig.stack.active) {
       checkForStack(gameTime)
     }
@@ -74,6 +89,9 @@ const onNewGameEvent= (gameEvent) => {
     }
     if (remindersConfig.smoke.active) {
       checkForSmoke(gameTime)
+    }
+    if (remindersConfig.ward.active) {
+      checkForWards(gameTime, wardsPurchaseCd)
     }
   }
 }
