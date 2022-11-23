@@ -13,8 +13,8 @@ h2 {
 }
 
 main {
-  height: 100%;
   display: flex;
+  border-bottom: 1px solid teal;
 }
 
 .alerts-container{
@@ -35,13 +35,13 @@ main {
 }
 
 .plus-container{
-  height: 80%;
+  height: 50%;
 }
 
-/* .ads-container{
+.ads-container{
   background-color: red;
   height: 50%;
-} */
+}
 
 .checkbox-container {
   display: flex;
@@ -55,4 +55,11 @@ input[type="number"]
 {
     font-size:14px!important;
     color: teal;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
 }

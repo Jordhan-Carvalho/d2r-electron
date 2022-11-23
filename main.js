@@ -4,15 +4,21 @@ const server = require("./server.js")
 const game = require("./game/game.js")
 
 const createWindow = () => {
-  const win = new BrowserWindow({
+  const mainWindow = new BrowserWindow({
     width: 800,
-    height: 450,
+    height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
   })
 
-  win.loadFile('./home/home.html')
+  mainWindow.loadFile('./home/home.html')
+
+  // MAKE FIVEER WINDOW OPEN IN BROWSER
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    require('electron').shell.openExternal(url);
+    return { action: 'deny' };
+  });
 }
 
 // Local http server that will listen to the dota game events
