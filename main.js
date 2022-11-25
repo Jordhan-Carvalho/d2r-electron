@@ -6,10 +6,11 @@ const game = require("./game/game.js")
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 650,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
+    frame: false
   })
 
   mainWindow.loadFile('./home/home.html')
@@ -34,10 +35,4 @@ app.whenReady().then(() => {
 // quit if all windows are closed (default on mac)
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
-})
-
-
-// ** COMMUNICATION TO ELEC WINDOW **
-ipcMain.handle("ping", () => {
-  return "BILAU"
 })

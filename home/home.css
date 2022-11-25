@@ -15,6 +15,13 @@ h2 {
 main {
   display: flex;
   border-bottom: 1px solid teal;
+  height: 50%;
+}
+
+.bottom-row {
+  display: flex;
+  height: 50%;
+  padding: 20px 0;
 }
 
 .alerts-container{
@@ -34,8 +41,12 @@ main {
   border-left: 1px solid teal;
 }
 
-.plus-container{
-  height: 50%;
+.more-info-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 50%;
+  padding-right: 10px;
 }
 
 .ads-container{
@@ -59,7 +70,8 @@ input[type="number"]
 
 .center {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 20px 0;
+  width: 50%;
 }

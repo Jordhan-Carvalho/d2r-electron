@@ -81,22 +81,22 @@ const onNewGameEvent= async (gameEvent) => {
     if (LAST_GAME_TIME === gameTime) return
     if (LAST_GAME_TIME > gameTime) LAST_GAME_TIME = 0
 
-    if (remindersConfig.stack.active) {
+    if (remindersConfig.stack && remindersConfig.stack.active) {
       checkForStack(gameTime)
     }
-    if(remindersConfig.midrunes.active) {
+    if(remindersConfig.midrunes && remindersConfig.midrunes.active) {
       checkForMidRunes(gameTime)
     }
-    if(remindersConfig.bountyrunes.active) {
+    if(remindersConfig.bountyrunes && remindersConfig.bountyrunes.active) {
       checkForBountyRunes(gameTime)
     }
-    if (remindersConfig.neutral.active) {
+    if (remindersConfig.neutral && remindersConfig.neutral.active) {
       checkNeutralItems(gameTime)
     }
-    if (remindersConfig.smoke.active) {
+    if (remindersConfig.smoke && remindersConfig.smoke.active) {
       checkForSmoke(gameTime)
     }
-    if (remindersConfig.ward.active) {
+    if (remindersConfig.ward && remindersConfig.ward.active) {
       checkForWards(gameTime, wardsPurchaseCd)
     }
 
