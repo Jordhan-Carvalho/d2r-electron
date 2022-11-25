@@ -18,7 +18,7 @@ const startServer = () => {
 
       req.on('end', () => {
         const jsonRespString = body.join()
-        console.log("O erro ta vindo daqui", jsonRespString)
+
         const gameEvent = JSON.parse(jsonRespString)
         game.onNewGameEvent(gameEvent) 
       })
