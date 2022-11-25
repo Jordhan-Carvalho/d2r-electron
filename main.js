@@ -10,7 +10,9 @@ const createWindow = () => {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
-    frame: false
+    /* frame: false, */
+    title: "Dota 2 reminders - v1.0.0",
+    autoHideMenuBar: true
   })
 
   mainWindow.loadFile('./home/home.html')
