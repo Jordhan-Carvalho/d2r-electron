@@ -23,7 +23,13 @@ const remindersConfigurationListener = (reminderName) => {
   })
 }
 
+const setVersion = () => {
+  const versionElem = document.getElementById("d2r-version")
+  versionElem.innerText = window.versions.app()
+}
 
+
+setVersion()
 remindersConfigurationListener("stack")
 remindersConfigurationListener("midrunes")
 remindersConfigurationListener("bountyrunes")
