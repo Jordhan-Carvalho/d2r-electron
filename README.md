@@ -1,6 +1,6 @@
 # Dota 2 reminders - Electron App 
 
-![Elder](dev_assets/elder.png?raw=true "Elder")
+![Electron app](dev_assets/elec.png?raw=true "Electron app")
 
 
 ## General
@@ -26,8 +26,11 @@ So you will need to follow the 3 steps:
 2 - Configure the dota client to send events to the app
 3 - Run the server
 
-### 1 - Download the app
-Links
+### 1 - Download the app or build
+You can build it from the source code using electron forge cli or download the executable Links:
+https://gofile.io/d/h585O0
+https://mega.nz/file/bIkAEbqZ#dnLre5bkyHQsFBTyXRwPlpueWS-z-08J_-SThneULbk
+
 
 ### 2 - Gamestate integration
 First thing to do is prepare your dota client to send in-game information to the app.
