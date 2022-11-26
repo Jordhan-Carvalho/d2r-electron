@@ -6,13 +6,11 @@
 ## General
 This is windows app (electron based) that will listen to your dota 2 game events and play a sound to remind you something that you perceive as important, such as bounty rune time, stack time etc...
 
-You can run it on your own machine or host it somewhere else.
-
 ## Features
 
 - Automatically listen to your game status
 - You can choose a range of different reminders (stack time, neutral items, smoke, wards,)
-  - stack (every xx:xx:44)
+  - stack (every xx:xx:47)
   - wards (every time it is available in the shop with a delay of 40 seconds to avoid spam)
   - smoke (1 stock takes 7 minutes to replenish, so that's the reminder time)
   - bounty runes (2 seconds before spawn)
@@ -24,12 +22,14 @@ You can run it on your own machine or host it somewhere else.
 So you will need to follow the 3 steps:
 1 - Download the app
 2 - Configure the dota client to send events to the app
-3 - Run the server
+3 - Run the app
 
 ### 1 - Download the app or build
-You can build it from the source code using electron forge cli or download the executable Links:
-https://gofile.io/d/h585O0
-https://mega.nz/file/bIkAEbqZ#dnLre5bkyHQsFBTyXRwPlpueWS-z-08J_-SThneULbk
+You can build it from the source code using electron forge cli or download the Zip archive containing the executable and gsi.cfg.
+Download Links:
+https://gofile.io/d/h585O0.
+
+https://mega.nz/file/bIkAEbqZ#dnLre5bkyHQsFBTyXRwPlpueWS-z-08J_-SThneULbk.
 
 
 ### 2 - Gamestate integration
@@ -40,6 +40,7 @@ Then copy the gamestate_integration_d2reminders.cfg file to your dota cfg folder
 If you never used overwolf you probably do not have the gamestate_integration folder, in that case just manually create it:
 ![DotaFolder](dev_assets/gamestatePath.png?raw=true "Gamestate path")
 * The gamestate_integration_d2reminders.cfg is found on this repository and also included on the zip file
+
 
 ## Roadmap
 - Tests SHAME
