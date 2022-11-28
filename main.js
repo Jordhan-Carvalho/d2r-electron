@@ -29,9 +29,6 @@ const createWindow = () => {
   });
 }
 
-// Local http server that will listen to the dota game events
-
-
 // Basically the same as app.on('ready')
 app.whenReady().then(() => {
   server.startServer()
