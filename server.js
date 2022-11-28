@@ -18,9 +18,14 @@ const startServer = () => {
 
       req.on('end', () => {
         const jsonRespString = body.join()
-
-        const gameEvent = JSON.parse(jsonRespString)
-        game.onNewGameEvent(gameEvent) 
+        try {
+          const gameEvent = JSON.parse(jsonRespString)
+          
+          game.onNewGameEvent(gameEvent) 
+        } catch (error) {
+          //TODO: log and send error
+          console.error("Error parsing game event", error)
+        }
       })
 
       res.write("Success")
