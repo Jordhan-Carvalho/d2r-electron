@@ -7,12 +7,10 @@ const remindersConfig = {
 }
 
 const checkForStack = (gameTime) => {
-  // console.log("checkForStack called", { stack:remindersConfig.stack, gameTime})
   const stackTime = 60
   const stackAlertTime = stackTime - remindersConfig['stack'].delay
 
   if ((gameTime-stackAlertTime)%stackTime === 0) {
-    console.log("Inside the if checkStack", { gameTime, stackAlertTime})
     const filePath = path.join(__dirname, "../sound/stack.mp3");
     sound.play(filePath);
   }
@@ -23,7 +21,6 @@ const checkForMidRunes = (gameTime) => {
   const midRunesAlertTime = midRunesTime - remindersConfig['midrunes'].delay
 
   if ((gameTime-midRunesAlertTime)%midRunesTime === 0) {
-    console.log("Inside the sound midrunes", {gameTime, midRunesAlertTime})
     const filePath = path.join(__dirname, "../sound/mid-rune.mp3");
     sound.play(filePath);
   }
@@ -34,7 +31,6 @@ const checkForBountyRunes = (gameTime) => {
   const bountyRunesAlertTime = bountyRunesTime - remindersConfig['bountyrunes'].delay
 
   if ((gameTime-bountyRunesAlertTime)%bountyRunesTime === 0) {
-    console.log("Inside the sound bounty runes", {gameTime, bountyRunesAlertTime})
     const filePath = path.join(__dirname, "../sound/bounty-runes.mp3");
     sound.play(filePath);
   }

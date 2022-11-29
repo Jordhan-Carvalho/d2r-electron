@@ -75,3 +75,12 @@ input[type="number"]
   align-items: center;
   width: 50%;
 }
+
+#delay-title{
+  margin-bottom: 5px;
+}
+
+#delay-text{
+  margin-bottom: 15px;
+  font-size: 13px;
+}
