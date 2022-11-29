@@ -1,6 +1,6 @@
 {
   "name": "d2r-electron",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Dota 2 Reminders - Electron",
   "main": "main.js",
   "scripts": {
@@ -9,6 +9,7 @@
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
+    "publish": "electron-forge publish",
     "deploy": "node build.js"
   },
   "author": "Jordhan Carvalho",
@@ -19,10 +20,12 @@
     "@electron-forge/maker-rpm": "^6.0.3",
     "@electron-forge/maker-squirrel": "^6.0.3",
     "@electron-forge/maker-zip": "^6.0.3",
+    "@electron-forge/publisher-github": "^6.0.3",
     "electron": "^21.3.0",
     "shelljs": "^0.8.5"
   },
   "dependencies": {
+    "electron-log": "^4.4.8",
     "electron-squirrel-startup": "^1.0.0",
     "sound-play": "^1.1.0"
   }
