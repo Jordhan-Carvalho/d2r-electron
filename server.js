@@ -1,3 +1,4 @@
+const log = require('electron-log');
 const http = require('http');
 const game = require('./game/game.js')
 
@@ -23,8 +24,8 @@ const startServer = () => {
           
           game.onNewGameEvent(gameEvent) 
         } catch (error) {
-          //TODO: log and send error
-          console.error("Error parsing game event", error)
+          log.error("Error parsing game event", error)
+          log.info("Data trying to parse", jsonRespString)
         }
       })
 
@@ -37,7 +38,7 @@ const startServer = () => {
   });
 
   server.listen(port, hostname, () => {
-    console.log(`Listening on http://${hostname}:${port}/`);
+    log.info(`Listening on http://${hostname}:${port}/`);
   });
 }
 

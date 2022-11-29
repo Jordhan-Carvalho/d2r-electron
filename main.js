@@ -4,6 +4,7 @@ const path = require('path')
 const server = require("./server.js")
 const game = require("./game/game.js")
 
+if (require('electron-squirrel-startup')) return;
 const autoHideMenuBar = app.isPackaged
 const appVersion = app.getVersion()
 

@@ -20,34 +20,50 @@ This is windows app (electron based) that will listen to your dota 2 game events
 
 ## How to install
 So you will need to follow the 3 steps:
-1 - Download the app
+1 - Download the app 
 2 - Configure the dota client to send events to the app
 3 - Run the app
 
-### 1 - Download the app or build
-You can build it from the source code using electron forge cli or download the Zip archive containing the executable and gsi.cfg.
-Download Links:
-https://gofile.io/d/h585O0.
+### 1 - Download the app or build from source
+You can build it from the source code using electron forge cli or download the installer and cfg file.
 
-https://mega.nz/file/bIkAEbqZ#dnLre5bkyHQsFBTyXRwPlpueWS-z-08J_-SThneULbk.
+Download link for the app:
+- https://d2r-electron-server-release.vercel.app
+
+Download link for the cfg file
+- https://gofile.io/d/uQqgpc
+- https://mega.nz/file/HQ9zjQzZ#99MNlznu33R_BUZ5h2TkT4p3rb6cQhIdebBFeTW4Qyk
+
+
+
+**You may get a warn about the app being untrusted app, that`s because microsoft requires an annual fee for the Windows Authenticode code signing certificate, which is out of my reach $$*
 
 
 ### 2 - Gamestate integration
 First thing to do is prepare your dota client to send in-game information to the app.
 For that you need to enable the game state integration, you can use the overwolf guide for that:
 https://support.overwolf.com/en/support/solutions/articles/9000212745-how-to-enable-game-state-integration-for-dota-2
+
 Then copy the gamestate_integration_d2reminders.cfg file to your dota cfg folder.
 If you never used overwolf you probably do not have the gamestate_integration folder, in that case just manually create it:
 ![DotaFolder](dev_assets/gamestatePath.png?raw=true "Gamestate path")
-* The gamestate_integration_d2reminders.cfg is found on this repository and also included on the zip file
+
+**The gamestate_integration_d2reminders.cfg is found on this repository and also included on the zip file*
 
 
 ## Roadmap
-- Tests SHAME
-- Turbo game mode
 - Persist configuration
+- Icons for the app
 - Support Roshan and Aegis time
 - Tower in deny range
+- Volume of alerts
+- Ability to add custom reminders
+- Custom call time between wards reminders
+- Optional reminder when watching games
+- Turbo game mode
+- Config ESLINT
+- Tests
+- Rework UI
 
 ## MIT License
 
