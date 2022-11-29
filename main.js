@@ -1,4 +1,5 @@
 const { app, BrowserWindow, ipcMain, autoUpdater } = require('electron')
+const log = require('electron-log');
 const path = require('path')
 const server = require("./server.js")
 const game = require("./game/game.js")
@@ -13,7 +14,7 @@ const createWindow = () => {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
-    title: `Dota 2 Reminders - ${appVersion}`,
+    title: `Dota 2 Reminders - v${appVersion}`,
 
     autoHideMenuBar
   })
@@ -41,18 +42,21 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
 
+const processArg = process.argv[1];
 // AUTO UPDATE SETTINGS... isPackaged will work as production checker
-if (app.isPackaged) {
-  const server = "https://test2-lake-rho.vercel.app"
+if (app.isPackaged && !(processArg == '--squirrel-firstrun')) {
+  log.info('Updating from version:', app.getVersion());
+  
+  const updateServer = "https://d2r-electron-server-release.vercel.app"
 
-  const url = `${server}/update/${process.platform}/${app.getVersion()}`
+  const url = `${updateServer}/update/${process.platform}/${app.getVersion()}`
   
   autoUpdater.setFeedURL({ url })
   
-  // Will for updates every 10 minutes
+  // Will for updates every 5 minutes
   setInterval(() => {
     autoUpdater.checkForUpdates()
-  }, 600000)
+  }, 300000)
 
   autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
     const dialogOpts = {
@@ -70,8 +74,6 @@ if (app.isPackaged) {
   })
 
   autoUpdater.on('error', (message) => {
-    // TODO: Send log error
-    console.error('There was a problem updating the application')
-    console.error(message)
+    log.error("There was a problem updating the application", message)
   })
 }
