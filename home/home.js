@@ -1,11 +1,11 @@
 // This will set the html input values for the checkbox and input
 const setHTMLvalues = async (reminderName, values) => {
-  console.log("Reminder name and values", reminderName, values)
   const checkBox = document.getElementById(`${reminderName}-checkbox`) 
   checkBox.checked = values.active
 
   checkBox.addEventListener('change', async() => {
-    const newValue = {...values} 
+    const reminderValues = await window.mainApi.storeGet(reminderName)
+    const newValue = {...reminderValues} 
     if (checkBox.checked) {
       newValue.active =  true
     } else {
@@ -21,8 +21,11 @@ const setHTMLvalues = async (reminderName, values) => {
     delayElem.value = values.delay
 
     delayElem.addEventListener('change', async () => {
-      const newValue = {...values}
+      const reminderValues = await window.mainApi.storeGet(reminderName)
+
+      const newValue = {...reminderValues}
       newValue.delay = Number(delayElem.value)
+
       await window.mainApi.storeSet(reminderName, newValue)
     })
   }
@@ -31,9 +34,8 @@ const setHTMLvalues = async (reminderName, values) => {
   await window.mainApi.storeSet(reminderName, values)
 }
 
-// get the config obj and set
+
 const getUserConfiguration = async() => {
-  /* const configKeys = ["stack", "midrunes", "bountyrunes", "smoke", "neutral", "ward"] */
   const defaultConfigObj = {stack: { active: false , delay: 13} , midrunes: {active: true, delay: 4}, bountyrunes: {active: true, delay: 3}, neutral: {active: true, delay:0}, smoke: {active: true, delay: 1}, ward: {active: true, delay: 0}}
   // get the values from the store
   for (const key in defaultConfigObj) {
@@ -44,7 +46,8 @@ const getUserConfiguration = async() => {
       defaultConfigObj[key].active = value.active
     } 
   }
-  // set the values on the html
+
+
   for (const key in defaultConfigObj) {
     setHTMLvalues(key, defaultConfigObj[key])
   }
