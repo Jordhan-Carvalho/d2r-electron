@@ -1,26 +1,54 @@
-const remindersConfigurationListener = (reminderName) => {
+// This will set the html input values for the checkbox and input
+const setHTMLvalues = async (reminderName, values) => {
+  console.log("Reminder name and values", reminderName, values)
   const checkBox = document.getElementById(`${reminderName}-checkbox`) 
-  checkBox.addEventListener('change', () => {
-    const reminderConfigListener = {name: reminderName, values: {}}
+  checkBox.checked = values.active
+
+  checkBox.addEventListener('change', async() => {
+    const newValue = {...values} 
     if (checkBox.checked) {
-      reminderConfigListener.values = { active: true }
+      newValue.active =  true
     } else {
-      reminderConfigListener.values = { active: false }
+      newValue.active = false
     }
-    window.mainApi.setReminderConfig(reminderConfigListener)
+    await window.mainApi.storeSet(reminderName, newValue)
   })
 
+
+  // Delay html input
   const delayElem = document.getElementById(`${reminderName}-delay`)
-  const delay = delayElem ? Number(delayElem.value) : 0
-  const reminderConfig = {name: reminderName, values: { active: checkBox.checked, delay }}
-  window.mainApi.setReminderConfig(reminderConfig)
+  if (delayElem) {
+    delayElem.value = values.delay
+
+    delayElem.addEventListener('change', async () => {
+      const newValue = {...values}
+      newValue.delay = Number(delayElem.value)
+      await window.mainApi.storeSet(reminderName, newValue)
+    })
+  }
 
 
-  delayElem && delayElem.addEventListener('change', () => {
-    const reminderConfigListener = {name: reminderName, values: {}}
-    reminderConfigListener.values = { delay: Number(delayElem.value) }
-    window.mainApi.setReminderConfig(reminderConfigListener)
-  })
+  await window.mainApi.storeSet(reminderName, values)
+}
+
+// get the config obj and set
+const getUserConfiguration = async() => {
+  /* const configKeys = ["stack", "midrunes", "bountyrunes", "smoke", "neutral", "ward"] */
+  const defaultConfigObj = {stack: { active: false , delay: 13} , midrunes: {active: true, delay: 4}, bountyrunes: {active: true, delay: 3}, neutral: {active: true, delay:0}, smoke: {active: true, delay: 1}, ward: {active: true, delay: 0}}
+  // get the values from the store
+  for (const key in defaultConfigObj) {
+    const value = await window.mainApi.storeGet(key) 
+
+    if (value) {
+      defaultConfigObj[key].delay = value.delay
+      defaultConfigObj[key].active = value.active
+    } 
+  }
+  // set the values on the html
+  for (const key in defaultConfigObj) {
+    setHTMLvalues(key, defaultConfigObj[key])
+  }
+
 }
 
 const setVersion = () => {
@@ -32,9 +60,4 @@ const setVersion = () => {
 
 
 setVersion()
-remindersConfigurationListener("stack")
-remindersConfigurationListener("midrunes")
-remindersConfigurationListener("bountyrunes")
-remindersConfigurationListener("smoke")
-remindersConfigurationListener("neutral")
-remindersConfigurationListener("ward")
+getUserConfiguration()

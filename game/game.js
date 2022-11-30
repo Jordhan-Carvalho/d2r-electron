@@ -1,14 +1,24 @@
 const sound = require("sound-play");
 const path = require("path");
+const store = require("../store/store.js")
 
 let BUY_WARDS_LAST_CALL = 0
 let LAST_GAME_TIME = 0
-const remindersConfig = {
+let STORE_DATA = store.getAllData()
+
+
+function storeChangeCallback(newValue, _oldValue) {
+  const parsedNewValue = {}
+  for (const key in newValue) {
+    parsedNewValue[key] = JSON.parse(newValue[key])
+  }
+  STORE_DATA = parsedNewValue
 }
 
 const checkForStack = (gameTime) => {
   const stackTime = 60
-  const stackAlertTime = stackTime - remindersConfig['stack'].delay
+  const stackDelay = store.handleStoreGet(null, "stack").delay
+  const stackAlertTime = stackTime - stackDelay 
 
   if ((gameTime-stackAlertTime)%stackTime === 0) {
     const filePath = path.join(__dirname, "../sound/stack.mp3");
@@ -18,7 +28,8 @@ const checkForStack = (gameTime) => {
 
 const checkForMidRunes = (gameTime) => {
   const midRunesTime = 120;
-  const midRunesAlertTime = midRunesTime - remindersConfig['midrunes'].delay
+  const midRunesDelay = store.handleStoreGet(null, "midrunes").delay
+  const midRunesAlertTime = midRunesTime - midRunesDelay
 
   if ((gameTime-midRunesAlertTime)%midRunesTime === 0) {
     const filePath = path.join(__dirname, "../sound/mid-rune.mp3");
@@ -28,7 +39,8 @@ const checkForMidRunes = (gameTime) => {
 
 const checkForBountyRunes = (gameTime) => {
   const bountyRunesTime = 180;
-  const bountyRunesAlertTime = bountyRunesTime - remindersConfig['bountyrunes'].delay
+  const bountyRunesDelay = store.handleStoreGet(null, "bountyrunes").delay
+  const bountyRunesAlertTime = bountyRunesTime - bountyRunesDelay 
 
   if ((gameTime-bountyRunesAlertTime)%bountyRunesTime === 0) {
     const filePath = path.join(__dirname, "../sound/bounty-runes.mp3");
@@ -49,7 +61,8 @@ const checkNeutralItems = (gameTime) => {
 
 const checkForSmoke = (gameTime) => {
   const smokeTime = 420
-  const smokeAlertTime = smokeTime - remindersConfig['smoke'].delay
+  const smokeDelay = store.handleStoreGet(null, "smoke").delay
+  const smokeAlertTime = smokeTime - smokeDelay
 
   if((gameTime-smokeAlertTime)%smokeTime === 0) {
     const filePath = path.join(__dirname, "../sound/smoke.mp3");
@@ -77,22 +90,22 @@ const onNewGameEvent= async (gameEvent) => {
     if (LAST_GAME_TIME === gameTime) return
     if (LAST_GAME_TIME > gameTime) LAST_GAME_TIME = 0
 
-    if (remindersConfig.stack && remindersConfig.stack.active) {
+    if (STORE_DATA.stack.active) {
       checkForStack(gameTime)
     }
-    if(remindersConfig.midrunes && remindersConfig.midrunes.active) {
+    if(STORE_DATA.midrunes.active) {
       checkForMidRunes(gameTime)
     }
-    if(remindersConfig.bountyrunes && remindersConfig.bountyrunes.active) {
+    if(STORE_DATA.bountyrunes.active) {
       checkForBountyRunes(gameTime)
     }
-    if (remindersConfig.neutral && remindersConfig.neutral.active) {
+    if (STORE_DATA.neutral.active) {
       checkNeutralItems(gameTime)
     }
-    if (remindersConfig.smoke && remindersConfig.smoke.active) {
+    if (STORE_DATA.smoke.active) {
       checkForSmoke(gameTime)
     }
-    if (remindersConfig.ward && remindersConfig.ward.active) {
+    if (STORE_DATA.ward.active) {
       checkForWards(gameTime, wardsPurchaseCd)
     }
 
@@ -100,12 +113,9 @@ const onNewGameEvent= async (gameEvent) => {
   }
 }
 
-const handleReminderConfig = (event, newReminderConfig) => {
-  remindersConfig[newReminderConfig.name] = {...remindersConfig[newReminderConfig.name], ...newReminderConfig.values }
-}
+store.onStoreChange(storeChangeCallback)
 
 module.exports = {
   onNewGameEvent,
-  handleReminderConfig
 }
 
