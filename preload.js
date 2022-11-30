@@ -10,5 +10,8 @@ contextBridge.exposeInMainWorld('versions', {
 
 
 contextBridge.exposeInMainWorld('mainApi', {
-  setReminderConfig: (reminderConfig) => ipcRenderer.send('set-reminder-config', reminderConfig)
+  // handle/invoker on/send differences https://stackoverflow.com/questions/59889729/what-is-the-difference-between-ipc-send-on-and-invoke-handle-in-electron
+  /* setReminderConfig: (reminderConfig) => ipcRenderer.send('set-reminder-config', reminderConfig), */
+  storeSet: (key,value) => ipcRenderer.invoke('store:set', key, value),
+  storeGet: (key) => ipcRenderer.invoke('store:get', key)
 })

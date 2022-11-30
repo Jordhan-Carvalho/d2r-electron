@@ -1,8 +1,9 @@
 const { app, BrowserWindow, ipcMain, autoUpdater } = require('electron')
 const log = require('electron-log');
 const path = require('path')
+const store = require("./store/store.js")
 const server = require("./server.js")
-const game = require("./game/game.js")
+
 
 if (require('electron-squirrel-startup')) return;
 const autoHideMenuBar = app.isPackaged
@@ -16,7 +17,6 @@ const createWindow = () => {
       preload: path.join(__dirname, 'preload.js'),
     },
     title: `Dota 2 Reminders - v${appVersion}`,
-
     autoHideMenuBar
   })
 
@@ -31,10 +31,13 @@ const createWindow = () => {
   });
 }
 
+
 // Basically the same as app.on('ready')
 app.whenReady().then(() => {
   server.startServer()
-  ipcMain.on('set-reminder-config', game.handleReminderConfig)
+  // handle/invoker on/send differences https://stackoverflow.com/questions/59889729/what-is-the-difference-between-ipc-send-on-and-invoke-handle-in-electron
+  ipcMain.handle('store:set', store.handleStoreSet)
+  ipcMain.handle('store:get', store.handleStoreGet)
   createWindow()
 })
 

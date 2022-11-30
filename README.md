@@ -20,8 +20,11 @@ This is windows app (electron based) that will listen to your dota 2 game events
 
 ## How to install
 So you will need to follow the 3 steps:
+
 1 - Download the app 
+
 2 - Configure the dota client to send events to the app
+
 3 - Run the app
 
 ### 1 - Download the app or build from source
@@ -53,13 +56,15 @@ If you never used overwolf you probably do not have the gamestate_integration fo
 
 ## Roadmap
 - Persist configuration
-- Icons for the app
 - Support Roshan and Aegis time
+- Icons for the app
 - Tower in deny range
+- Optional reminder when watching games
 - Volume of alerts
+- Record video demo 
 - Ability to add custom reminders
 - Custom call time between wards reminders
-- Optional reminder when watching games
+- Dark Mode
 - Turbo game mode
 - Config ESLINT
 - Tests
