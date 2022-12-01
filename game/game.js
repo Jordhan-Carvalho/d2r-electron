@@ -25,7 +25,7 @@ function storeChangeCallback(newValue, _oldValue) {
 
 
 const checkForRoshanAndAegis = (gameTime, deathTime) => {
-  const	roshanMinTime = 479
+  const	roshanMinTime = 469
 	// roshanMinSpawnDelay := 480
 	const roshanMaxTime = 659
 	// roshanMaxSpawnDelay := 660

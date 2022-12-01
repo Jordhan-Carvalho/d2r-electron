@@ -86,11 +86,11 @@ input[type="number"]
   padding-left: 10px;
 }
 
-#delay-title{
+.delay-title{
   margin-bottom: 5px;
 }
 
-#delay-text{
+.delay-text{
   margin-bottom: 15px;
   font-size: 13px;
 }
@@ -112,6 +112,4 @@ input[type="number"]
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 50%;
-  margin: auto;
 }
