@@ -1,3 +1,49 @@
+const setRoshanInputMask = () => {
+const roshanInput = document.getElementById("roshan-timer")
+
+Inputmask("05:59:59", {
+    placeholder: "HH:MM:SS",
+    insertMode: false,
+    showMaskOnHover: false,
+    definitions: {
+        '5': {
+            validator: "[0-5]",
+            cardinality: 1
+        }
+    }
+  }).mask(roshanInput);
+} 
+
+const convertFullTimeToSeconds = (time) => {
+  const date = new Date()
+  date.setHours(...time.split(":"))
+
+  const seconds = date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds()
+
+  return seconds
+}
+
+
+// roshan... active and death time
+const roshanListener = () => {
+  const checkBox = document.getElementById(`roshan-checkbox`) 
+  checkBox.addEventListener('change', () => {
+    const roshanConfig = { active: checkBox.checked } 
+
+    window.mainApi.setRoshanConfig(roshanConfig)
+  })
+
+  const deathInputElem =  document.getElementById("roshan-timer")
+
+  deathInputElem.addEventListener('change', () => {
+    const timeInSeconds = convertFullTimeToSeconds(deathInputElem.value)
+    const roshanConfig = { time: timeInSeconds}
+
+    window.mainApi.setRoshanConfig(roshanConfig)
+
+  })
+}
+
 // This will set the html input values for the checkbox and input
 const setHTMLvalues = async (reminderName, values) => {
   const checkBox = document.getElementById(`${reminderName}-checkbox`) 
@@ -56,11 +102,13 @@ const getUserConfiguration = async() => {
 
 const setVersion = () => {
   const versionElem = document.getElementById("d2r-version")
-  window.versions.app((event, value) => {
+  window.versions.app((_event, value) => {
     versionElem.innerText = value
   })
 }
 
 
+setRoshanInputMask()
+roshanListener()
 setVersion()
 getUserConfiguration()
