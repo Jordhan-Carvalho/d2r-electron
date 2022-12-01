@@ -6,6 +6,14 @@ let BUY_WARDS_LAST_CALL = 0
 let LAST_GAME_TIME = 0
 let STORE_DATA = store.getAllData()
 
+let roshanConfig = {
+  active: false,
+  time: 0,
+}
+
+const handleRoshanConfig = (_event, newRoshanConfig) => {
+  roshanConfig = {...roshanConfig, ...newRoshanConfig}
+}
 
 function storeChangeCallback(newValue, _oldValue) {
   const parsedNewValue = {}
@@ -13,6 +21,34 @@ function storeChangeCallback(newValue, _oldValue) {
     parsedNewValue[key] = JSON.parse(newValue[key])
   }
   STORE_DATA = parsedNewValue
+}
+
+
+const checkForRoshanAndAegis = (gameTime, deathTime) => {
+  const	roshanMinTime = 479
+	// roshanMinSpawnDelay := 480
+	const roshanMaxTime = 659
+	// roshanMaxSpawnDelay := 660
+	const aegis2minWarnTime = 180
+	const aegis30sWarnTime = 270
+
+  if (deathTime+aegis2minWarnTime === gameTime) {
+    const filePath = path.join(__dirname, "../sound/aegis-2min.mp3");
+    sound.play(filePath);
+  } 
+  else if (deathTime+aegis30sWarnTime === gameTime) {
+    const filePath = path.join(__dirname, "../sound/aegis-30s.mp3");
+    sound.play(filePath);
+  } 
+  else if (deathTime+roshanMinTime === gameTime) {
+    const filePath = path.join(__dirname, "../sound/roshan-min.mp3");
+    sound.play(filePath);
+  } 
+  else if (deathTime+roshanMaxTime === gameTime) {
+    const filePath = path.join(__dirname, "../sound/roshan-max.mp3");
+    sound.play(filePath);
+  } 
+
 }
 
 const checkForStack = (gameTime) => {
@@ -108,6 +144,9 @@ const onNewGameEvent= async (gameEvent) => {
     if (STORE_DATA.ward.active) {
       checkForWards(gameTime, wardsPurchaseCd)
     }
+    if (roshanConfig.active && roshanConfig.time > 0) {
+      checkForRoshanAndAegis(gameTime, roshanConfig.time)
+    }
 
     LAST_GAME_TIME = gameTime
   }
@@ -117,5 +156,6 @@ store.onStoreChange(storeChangeCallback)
 
 module.exports = {
   onNewGameEvent,
+  handleRoshanConfig
 }
 

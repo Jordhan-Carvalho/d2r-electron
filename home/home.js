@@ -14,30 +14,33 @@ Inputmask("05:59:59", {
   }).mask(roshanInput);
 } 
 
+const convertFullTimeToSeconds = (time) => {
+  const date = new Date()
+  date.setHours(...time.split(":"))
+
+  const seconds = date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds()
+
+  return seconds
+}
+
 
 // roshan... active and death time
-const roshanListener = (reminderName) => {
-  const checkBox = document.getElementById(`${reminderName}-checkbox`) 
+const roshanListener = () => {
+  const checkBox = document.getElementById(`roshan-checkbox`) 
   checkBox.addEventListener('change', () => {
-    const reminderConfigListener = {name: reminderName, values: {}}
-    if (checkBox.checked) {
-      reminderConfigListener.values = { active: true }
-    } else {
-      reminderConfigListener.values = { active: false }
-    }
-    window.mainApi.setReminderConfig(reminderConfigListener)
+    const roshanConfig = { active: checkBox.checked } 
+
+    window.mainApi.setRoshanConfig(roshanConfig)
   })
 
-  const delayElem = document.getElementById(`${reminderName}-delay`)
-  const delay = delayElem ? Number(delayElem.value) : 0
-  const reminderConfig = {name: reminderName, values: { active: checkBox.checked, delay }}
-  window.mainApi.setReminderConfig(reminderConfig)
+  const deathInputElem =  document.getElementById("roshan-timer")
 
+  deathInputElem.addEventListener('change', () => {
+    const timeInSeconds = convertFullTimeToSeconds(deathInputElem.value)
+    const roshanConfig = { time: timeInSeconds}
 
-  delayElem && delayElem.addEventListener('change', () => {
-    const reminderConfigListener = {name: reminderName, values: {}}
-    reminderConfigListener.values = { delay: Number(delayElem.value) }
-    window.mainApi.setReminderConfig(reminderConfigListener)
+    window.mainApi.setRoshanConfig(roshanConfig)
+
   })
 }
 
@@ -99,12 +102,13 @@ const getUserConfiguration = async() => {
 
 const setVersion = () => {
   const versionElem = document.getElementById("d2r-version")
-  window.versions.app((event, value) => {
+  window.versions.app((_event, value) => {
     versionElem.innerText = value
   })
 }
 
 
 setRoshanInputMask()
+roshanListener()
 setVersion()
 getUserConfiguration()
