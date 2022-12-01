@@ -17,7 +17,8 @@ const createWindow = () => {
       preload: path.join(__dirname, 'preload.js'),
     },
     title: `Dota 2 Reminders - v${appVersion}`,
-    autoHideMenuBar
+    autoHideMenuBar,
+    icon : path.join(__dirname, '/assets/dota2reminders.ico'),
   })
 
   mainWindow.loadFile('./home/home.html')
