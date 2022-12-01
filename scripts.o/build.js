@@ -1,7 +1,8 @@
+// TODO: Script working if this file is in the root fodler, need to make adjustments to work here
 // MUST HAVE 7zip installed https://www.7-zip.org/
 // ONLY WORK ON WINDOWS 10-11... MUST HAVE GITHUB CLI FOR THE RELEASE
 const shell = require("shelljs");
-const pjson = require('./package.json');
+const pjson = require('../package.json');
 const path = require('path')
 
 const zipPath = path.join(__dirname, 'out/make/squirrel.windows/')
