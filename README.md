@@ -1,6 +1,6 @@
 # Dota 2 reminders - Electron App 
 
-![Electron app](dev_assets/elec.png?raw=true "Electron app")
+![Electron app](dev_assets.o/elec.png?raw=true "Electron app")
 
 
 ## General
@@ -49,7 +49,7 @@ https://support.overwolf.com/en/support/solutions/articles/9000212745-how-to-ena
 
 Then copy the gamestate_integration_d2reminders.cfg file to your dota cfg folder.
 If you never used overwolf you probably do not have the gamestate_integration folder, in that case just manually create it:
-![DotaFolder](dev_assets/gamestatePath.png?raw=true "Gamestate path")
+![DotaFolder](dev_assets.o/gamestatePath.png?raw=true "Gamestate path")
 
 **The gamestate_integration_d2reminders.cfg is found on this repository and also included on the zip file*
 
