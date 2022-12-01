@@ -57,12 +57,13 @@ if (app.isPackaged && !(processArg == '--squirrel-firstrun')) {
   
   autoUpdater.setFeedURL({ url })
   
-  // Will for updates every 5 minutes
+  // Will check for updates every 5 minutes
   setInterval(() => {
     autoUpdater.checkForUpdates()
   }, 300000)
 
   autoUpdater.on('update-downloaded', (_event, releaseNotes, releaseName) => {
+    log.info('Update complete', releaseName);
     const dialogOpts = {
       type: 'info',
       buttons: ['Restart', 'Later'],
