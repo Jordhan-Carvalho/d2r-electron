@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, autoUpdater } = require('electron')
+const { app, BrowserWindow, ipcMain, autoUpdater, dialog } = require('electron')
 const log = require('electron-log');
 const path = require('path')
 const store = require("./store/store.js")
@@ -48,7 +48,6 @@ app.on('window-all-closed', () => {
 })
 
 const processArg = process.argv[1];
-// AUTO UPDATE SETTINGS... isPackaged will work as production checker
 if (app.isPackaged && !(processArg == '--squirrel-firstrun')) {
   log.info('Updating from version:', app.getVersion());
   
@@ -58,12 +57,13 @@ if (app.isPackaged && !(processArg == '--squirrel-firstrun')) {
   
   autoUpdater.setFeedURL({ url })
   
-  // Will for updates every 5 minutes
+  // Will check for updates every 5 minutes
   setInterval(() => {
     autoUpdater.checkForUpdates()
   }, 300000)
 
-  autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+  autoUpdater.on('update-downloaded', (_event, releaseNotes, releaseName) => {
+    log.info('Update complete', releaseName);
     const dialogOpts = {
       type: 'info',
       buttons: ['Restart', 'Later'],

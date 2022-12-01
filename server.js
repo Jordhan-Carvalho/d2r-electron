@@ -18,7 +18,7 @@ const startServer = () => {
       });
 
       req.on('end', () => {
-        const jsonRespString = body.join()
+        const jsonRespString = body.join('')
         try {
           const gameEvent = JSON.parse(jsonRespString)
           
