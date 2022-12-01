@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <!-- <meta
@@ -128,7 +128,8 @@ content="default-src 'self'; script-src 'self'"
     <!-- --------------------------- BOTTOM ------------------------------------- -->
 
     <div class="bottom-row">
-      <div class="more-info-container">
+
+      <div class="bottom-right-container">
         <h2>Dota 2 Reminders v<span id="d2r-version"></span> - made with ❤ </h2>
         <p>Make sure you have downloaded it from the the github repo. We also have an open-source discord bot server. If you enjoy it give us a star on Github!</p>
         <p>Bugs, issues or suggestions? post them on the issue section of the github repository.</p>
@@ -137,8 +138,22 @@ content="default-src 'self'; script-src 'self'"
         <a href="https://github.com/Jordhan-Carvalho/dota2reminders" target="_blank" class="waves-effect waves-light btn-small"><i class="material-icons left">code</i>Discord Server Bot</a>
       </div>
 
-      <div class="center">
-        <div class="center"> 
+      <div class="bottom-left-container">
+        <h2>Roshan and Aegis Reminder:</h2>
+        <p>*There will be reminder for the min and maximum roshan spawn, also a reminder for the aegis expiration time (2min and 30 seconds)
+        <div class="roshan-inputs-container">
+          <div class="roshan-input-time">
+            <label for="roshan-timer">Roshan death time: </label>
+            <input id="roshan-timer" type="text" name="roshan-timer"  />
+          </div>
+          <p>
+            <label>
+              <input type="checkbox" id="roshan-checkbox"/>
+              <span>Active</span>
+            </label>
+          </p>
+        </div>
+        <div class="last-item-coffe"> 
           <a href="https://www.buymeacoffee.com/jordhanrdzM" target="_blank">
             <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=jordhanrdzM&button_colour=f99553&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00" />
           </a>
@@ -148,6 +163,7 @@ content="default-src 'self'; script-src 'self'"
     </div>
 
     <script src="../materialize/js/materialize.min.js"></script>
+    <script src="../helpers/inputmask.min.js"></script>
     <script src="./home.js"></script>
   </body>
 </html>

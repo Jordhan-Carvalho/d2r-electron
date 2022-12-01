@@ -21,7 +21,6 @@ main {
 .bottom-row {
   display: flex;
   height: 50%;
-  padding: 20px 0;
 }
 
 .alerts-container{
@@ -41,11 +40,12 @@ main {
   border-left: 1px solid teal;
 }
 
-.more-info-container {
+.bottom-right-container {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   width: 50%;
+  padding: 20px 0;
   padding-right: 10px;
 }
 
@@ -76,6 +76,16 @@ input[type="number"]
   width: 50%;
 }
 
+.bottom-left-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 50%;
+  padding: 20px 0;
+  border-left: 1px solid black;
+  padding-left: 10px;
+}
+
 #delay-title{
   margin-bottom: 5px;
 }
@@ -83,4 +93,25 @@ input[type="number"]
 #delay-text{
   margin-bottom: 15px;
   font-size: 13px;
+}
+
+.roshan-inputs-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.roshan-input-time {
+  padding: 0 10px;
+  margin-top: 20px;
+  width: 50%;
+}
+
+.last-item-coffe{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  margin: auto;
 }

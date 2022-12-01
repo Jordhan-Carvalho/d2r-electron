@@ -1,3 +1,46 @@
+const setRoshanInputMask = () => {
+const roshanInput = document.getElementById("roshan-timer")
+
+Inputmask("05:59:59", {
+    placeholder: "HH:MM:SS",
+    insertMode: false,
+    showMaskOnHover: false,
+    definitions: {
+        '5': {
+            validator: "[0-5]",
+            cardinality: 1
+        }
+    }
+  }).mask(roshanInput);
+} 
+
+
+// roshan... active and death time
+const roshanListener = (reminderName) => {
+  const checkBox = document.getElementById(`${reminderName}-checkbox`) 
+  checkBox.addEventListener('change', () => {
+    const reminderConfigListener = {name: reminderName, values: {}}
+    if (checkBox.checked) {
+      reminderConfigListener.values = { active: true }
+    } else {
+      reminderConfigListener.values = { active: false }
+    }
+    window.mainApi.setReminderConfig(reminderConfigListener)
+  })
+
+  const delayElem = document.getElementById(`${reminderName}-delay`)
+  const delay = delayElem ? Number(delayElem.value) : 0
+  const reminderConfig = {name: reminderName, values: { active: checkBox.checked, delay }}
+  window.mainApi.setReminderConfig(reminderConfig)
+
+
+  delayElem && delayElem.addEventListener('change', () => {
+    const reminderConfigListener = {name: reminderName, values: {}}
+    reminderConfigListener.values = { delay: Number(delayElem.value) }
+    window.mainApi.setReminderConfig(reminderConfigListener)
+  })
+}
+
 // This will set the html input values for the checkbox and input
 const setHTMLvalues = async (reminderName, values) => {
   const checkBox = document.getElementById(`${reminderName}-checkbox`) 
@@ -62,5 +105,6 @@ const setVersion = () => {
 }
 
 
+setRoshanInputMask()
 setVersion()
 getUserConfiguration()
