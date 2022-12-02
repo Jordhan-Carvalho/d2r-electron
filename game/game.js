@@ -23,6 +23,10 @@ function storeChangeCallback(newValue, _oldValue) {
   STORE_DATA = parsedNewValue
 }
 
+const checkForTowerDeny = (towers) => {
+  console.log("Check for tower deny", towers)
+}
+
 const checkForDaytime = (isDaytime) => {
   if (isDaytime) {
     const filePath = path.join(__dirname, "../sound/daytime.mp3");
@@ -143,6 +147,7 @@ const onNewGameEvent= async (gameEvent) => {
     const gameTime = gameEvent.map.clock_time
     const wardsPurchaseCd = gameEvent.map.ward_purchase_cooldown
     const isDaytime = gameEvent.map.daytime
+    const buildings = gameEvent.buildings
 
     if (LAST_GAME_TIME === gameTime) return
     if (LAST_GAME_TIME > gameTime) LAST_GAME_TIME = 0
@@ -165,11 +170,14 @@ const onNewGameEvent= async (gameEvent) => {
     if (STORE_DATA.ward.active) {
       checkForWards(gameTime, wardsPurchaseCd)
     }
-    if (roshanConfig.active && roshanConfig.time > 0) {
-      checkForRoshanAndAegis(gameTime, roshanConfig.time)
-    }
     if (STORE_DATA.daytime.active) {
       checkForDaytime(isDaytime)
+    }
+    if (STORE_DATA.tower.active) {
+      checkForTowerDeny(buildings)
+    }
+    if (roshanConfig.active && roshanConfig.time > 0) {
+      checkForRoshanAndAegis(gameTime, roshanConfig.time)
     }
 
     LAST_GAME_TIME = gameTime
