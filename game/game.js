@@ -23,14 +23,25 @@ function storeChangeCallback(newValue, _oldValue) {
   STORE_DATA = parsedNewValue
 }
 
+const checkForDaytime = (isDaytime) => {
+  if (isDaytime) {
+    const filePath = path.join(__dirname, "../sound/daytime.mp3");
+    sound.play(filePath);
+  } else {
+    const filePath = path.join(__dirname, "../sound/nighttime.mp3");
+    sound.play(filePath);
+  }
+}
 
 const checkForRoshanAndAegis = (gameTime, deathTime) => {
   const	roshanMinTime = 469
-	// roshanMinSpawnDelay := 480
-	const roshanMaxTime = 659
-	// roshanMaxSpawnDelay := 660
-	const aegis2minWarnTime = 180
-	const aegis30sWarnTime = 270
+  // roshanMinSpawnDelay := 480
+  const roshanMaxTime = 659
+  // roshanMaxSpawnDelay := 660
+  const aegis2minWarnTime = 180
+  const aegis30sWarnTime = 271
+  const aegis10sWarnTime = 291 
+  const aegisExpiredTime = 302
 
   if (deathTime+aegis2minWarnTime === gameTime) {
     const filePath = path.join(__dirname, "../sound/aegis-2min.mp3");
@@ -38,6 +49,14 @@ const checkForRoshanAndAegis = (gameTime, deathTime) => {
   } 
   else if (deathTime+aegis30sWarnTime === gameTime) {
     const filePath = path.join(__dirname, "../sound/aegis-30s.mp3");
+    sound.play(filePath);
+  } 
+  else if (deathTime+aegis10sWarnTime === gameTime) {
+    const filePath = path.join(__dirname, "../sound/aegis-10s.mp3");
+    sound.play(filePath);
+  } 
+  else if (deathTime+aegisExpiredTime === gameTime) {
+    const filePath = path.join(__dirname, "../sound/aegis-expired.mp3");
     sound.play(filePath);
   } 
   else if (deathTime+roshanMinTime === gameTime) {
@@ -116,13 +135,15 @@ const checkForWards = (gameTime, wardCd) => {
     sound.play(filePath);
     BUY_WARDS_LAST_CALL = gameTime
   }
-  
+
 }
 
 const onNewGameEvent= async (gameEvent) => {
   if (gameEvent.map && gameEvent.map.game_state === 'DOTA_GAMERULES_STATE_GAME_IN_PROGRESS') {
     const gameTime = gameEvent.map.clock_time
     const wardsPurchaseCd = gameEvent.map.ward_purchase_cooldown
+    const isDaytime = gameEvent.map.daytime
+
     if (LAST_GAME_TIME === gameTime) return
     if (LAST_GAME_TIME > gameTime) LAST_GAME_TIME = 0
 
@@ -146,6 +167,9 @@ const onNewGameEvent= async (gameEvent) => {
     }
     if (roshanConfig.active && roshanConfig.time > 0) {
       checkForRoshanAndAegis(gameTime, roshanConfig.time)
+    }
+    if (STORE_DATA.daytime.active) {
+      checkForDaytime(isDaytime)
     }
 
     LAST_GAME_TIME = gameTime

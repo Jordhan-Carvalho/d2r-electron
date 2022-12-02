@@ -21,6 +21,9 @@ const schema = {
 	neutral: {
 		type: 'string',
 	},
+  daytime: {
+    type: 'string'
+  }
 };
 
 const store = new Store({schema})

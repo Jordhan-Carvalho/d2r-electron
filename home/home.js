@@ -82,7 +82,7 @@ const setHTMLvalues = async (reminderName, values) => {
 
 
 const getUserConfiguration = async() => {
-  const defaultConfigObj = {stack: { active: false , delay: 13} , midrunes: {active: true, delay: 4}, bountyrunes: {active: true, delay: 3}, neutral: {active: true, delay:0}, smoke: {active: true, delay: 1}, ward: {active: true, delay: 0}}
+  const defaultConfigObj = {stack: { active: false , delay: 13} , midrunes: {active: true, delay: 4}, bountyrunes: {active: true, delay: 3}, neutral: {active: true, delay:0}, smoke: {active: true, delay: 1}, ward: {active: true, delay: 0}, daytime: {active: true, delay: 0}}
   // get the values from the store
   for (const key in defaultConfigObj) {
     const value = await window.mainApi.storeGet(key) 
