@@ -2,7 +2,10 @@ const sound = require("sound-play");
 const path = require("path");
 const store = require("../store/store.js")
 
-let BUY_WARDS_LAST_CALL = 0
+let LAST_CALL_BUY_WARDS = 0
+let LAST_CALL_TOWER_DENY = 0
+let DAYTIME_CALLED = false
+let NIGHT_CALLED = false
 let LAST_GAME_TIME = 0
 let STORE_DATA = store.getAllData()
 
@@ -23,17 +26,40 @@ function storeChangeCallback(newValue, _oldValue) {
   STORE_DATA = parsedNewValue
 }
 
-const checkForTowerDeny = (towers) => {
-  console.log("Check for tower deny", towers)
+const checkForTowerDeny = (gameTime, buildings) => {
+  if (LAST_CALL_TOWER_DENY > gameTime) LAST_CALL_TOWER_DENY = 0
+  const team = buildings.dire ? "dire" : "radiant"
+  const timeBetweenCalls = 20
+
+  for (const building in buildings[team]) {
+    if (building.includes('tower') && (LAST_CALL_TOWER_DENY+timeBetweenCalls) <= gameTime) {
+      const lane = building.split('_')[3]
+      const maxHealth = buildings[team][building].max_health
+      const currentHealth = buildings[team][building].health
+
+      const isDeniable = currentHealth <= (maxHealth * 0.1)
+      if (isDeniable) {
+        const filePath = path.join(__dirname, `../sound/${lane}-tower.mp3`);
+        sound.play(filePath);
+        LAST_CALL_TOWER_DENY = gameTime
+      }
+
+    }
+  }
+
 }
 
 const checkForDaytime = (isDaytime) => {
-  if (isDaytime) {
+  if (isDaytime && !DAYTIME_CALLED) {
     const filePath = path.join(__dirname, "../sound/daytime.mp3");
     sound.play(filePath);
-  } else {
+    DAYTIME_CALLED = true
+    NIGHT_CALLED = false
+  } else if (!isDaytime && !NIGHT_CALLED) {
     const filePath = path.join(__dirname, "../sound/nighttime.mp3");
     sound.play(filePath);
+    NIGHT_CALLED = true
+    DAYTIME_CALLED = false
   }
 }
 
@@ -131,13 +157,13 @@ const checkForSmoke = (gameTime) => {
 }
 
 const checkForWards = (gameTime, wardCd) => {
-  if (BUY_WARDS_LAST_CALL > gameTime) BUY_WARDS_LAST_CALL = 0
+  if (LAST_CALL_BUY_WARDS > gameTime) LAST_CALL_BUY_WARDS = 0
   const timeBetweenCalls = 30
 
-  if (wardCd === 0 && (BUY_WARDS_LAST_CALL+timeBetweenCalls) <= gameTime) {
+  if (wardCd === 0 && (LAST_CALL_BUY_WARDS+timeBetweenCalls) <= gameTime) {
     const filePath = path.join(__dirname, "../sound/wards.mp3");
     sound.play(filePath);
-    BUY_WARDS_LAST_CALL = gameTime
+    LAST_CALL_BUY_WARDS = gameTime
   }
 
 }
@@ -174,7 +200,7 @@ const onNewGameEvent= async (gameEvent) => {
       checkForDaytime(isDaytime)
     }
     if (STORE_DATA.tower.active) {
-      checkForTowerDeny(buildings)
+      checkForTowerDeny(gameTime, buildings)
     }
     if (roshanConfig.active && roshanConfig.time > 0) {
       checkForRoshanAndAegis(gameTime, roshanConfig.time)
