@@ -29,7 +29,7 @@ function storeChangeCallback(newValue, _oldValue) {
 const checkForTowerDeny = (gameTime, buildings) => {
   if (LAST_CALL_TOWER_DENY > gameTime) LAST_CALL_TOWER_DENY = 0
   const team = buildings.dire ? "dire" : "radiant"
-  const timeBetweenCalls = 20
+  const timeBetweenCalls = 10
 
   for (const building in buildings[team]) {
     if (building.includes('tower') && (LAST_CALL_TOWER_DENY+timeBetweenCalls) <= gameTime) {

@@ -1,4 +1,4 @@
-# Dota 2 reminders - Electron App 
+# Dota 2 reminders - Desktop App 
 
 ![Electron app](dev_assets.o/elec.png?raw=true "Electron app")
 
@@ -9,14 +9,17 @@ This is windows app (electron based) that will listen to your dota 2 game events
 ## Features
 
 - Automatically listen to your game status
-- You can choose a range of different reminders (stack time, neutral items, smoke, wards,)
-  - stack (every xx:xx:47)
+- You can choose a range of different reminders:
+  - stack (every minute)
   - wards (every time it is available in the shop with a delay of 40 seconds to avoid spam)
   - smoke (1 stock takes 7 minutes to replenish, so that's the reminder time)
-  - bounty runes (2 seconds before spawn)
-  - mid runes (4 seconds before spawn)
+  - bounty runes
+  - mid runes
   - neutral items (every time a new tier is available to drop)
-- You can edit the reminders anytime you want
+  - Day/Night time
+  - Tower in deny range (with a min delay of 10 seconds between calls)
+  - Roshan/Aegis (Min and max roshan spawn time and aegis expiration time)
+- You can add delay(seconds before the event) to some reminders, like the stack and runes.
 
 ## How to install
 So you will need to follow the 3 steps:
@@ -55,15 +58,10 @@ If you never used overwolf you probably do not have the gamestate_integration fo
 
 
 ## Roadmap
-- Persist configuration
-- Support Roshan and Aegis time
-- Icons for the app
-- Tower in deny range
-- Optional reminder when watching games
-- Volume of alerts
-- Record video demo 
+- Record video of app demo and installation
+- Optional set reminder when watching games
+- Volume of the alerts
 - Ability to add custom reminders
-- Custom call time between wards reminders
 - Dark Mode
 - Turbo game mode
 - Config ESLINT
