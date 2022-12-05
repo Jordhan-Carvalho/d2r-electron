@@ -1,11 +1,12 @@
 const log = require('electron-log');
 const { v4: uuidv4 } = require('uuid');
 const store = require("../store/store.js")
-const fetch = require('node-fetch')
+const axios = require('axios')
 
-const gaAPI = process.env.ANALYTICS_API
+
+const configEnv = require("../config-envs")
 const measurementId = "G-HXYFBKW42T"
-const url = `https://www.google-analytics.com/mp/collect?measurement_id=${measurementId}&api_secret=${gaAPI}`
+const url = `https://www.google-analytics.com/mp/collect?measurement_id=${measurementId}&api_secret=${configEnv.ANALYTICS_API}`
 
 const registerEvent = (eventObject) => {
   let clientId = store.userStore.get("clientId", null)
@@ -14,23 +15,22 @@ const registerEvent = (eventObject) => {
     store.userStore.set("clientId", clientId)
   }
 
+eventObject.params = { ...eventObject.params, engagement_time_msec: 1}
+
 const postData = {
     client_id: clientId,
     events: [
       eventObject
     ]
   }
+  
+  axios.post(url, postData)
+  .then(function (_response) {
+  })
+  .catch(function (error) {
+    log.error(error)
+  });
 
-fetch(url, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(postData)
-})
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => log.error(error));
 }
 
 
