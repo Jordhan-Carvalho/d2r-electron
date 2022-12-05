@@ -4,6 +4,7 @@ const path = require('path')
 const store = require("./store/store.js")
 const server = require("./server.js")
 const game = require("./game/game.js")
+const ga4 = require("./helpers/ga4.js")
 
 
 if (require('electron-squirrel-startup')) return;
@@ -42,6 +43,14 @@ app.whenReady().then(() => {
   ipcMain.handle('store:set', store.handleStoreSet)
   ipcMain.handle('store:get', store.handleStoreGet)
   createWindow()
+
+ga4.registerEvent({
+    name: "app_opened",
+    params: {
+      version: app.getVersion(),
+    }
+  })
+  
 })
 
 // quit if all windows are closed (default on mac)
@@ -50,6 +59,16 @@ app.on('window-all-closed', () => {
 })
 
 const processArg = process.argv[1];
+
+if (processArg == '--squirrel-firstrun') { 
+  ga4.registerEvent({
+    name: "first_time_run",
+    params: {
+      version: app.getVersion()
+    }
+  })
+}
+
 if (app.isPackaged && !(processArg == '--squirrel-firstrun')) {
   log.info('Updating from version:', app.getVersion());
   
@@ -62,10 +81,22 @@ if (app.isPackaged && !(processArg == '--squirrel-firstrun')) {
   // Will check for updates every 5 minutes
   setInterval(() => {
     autoUpdater.checkForUpdates()
+    ga4.registerEvent({
+      name: "update_check",
+    })
   }, 300000)
 
   autoUpdater.on('update-downloaded', (_event, releaseNotes, releaseName) => {
     log.info('Update complete', releaseName);
+
+    ga4.registerEvent({
+      name: "update_downloaded",
+      params: {
+        from_version: app.getVersion(),
+        to_version: releaseName,
+      }
+    })
+
     const dialogOpts = {
       type: 'info',
       buttons: ['Restart', 'Later'],

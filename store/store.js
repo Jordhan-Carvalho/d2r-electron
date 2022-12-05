@@ -27,6 +27,7 @@ const schema = {
 };
 
 const store = new Store({schema})
+const userStore = new Store({name: "userStore"})
 
 // Assuming that the value will always be an object
 function handleStoreSet(_event, key, value) {
@@ -57,5 +58,6 @@ module.exports = {
   handleStoreGet,
   handleStoreSet,
   getAllData,
-  onStoreChange
+  onStoreChange,
+  userStore
 } 
