@@ -78,8 +78,8 @@ if (app.isPackaged && !(processArg == '--squirrel-firstrun')) {
 
   autoUpdater.setFeedURL({ url })
 
-  // Will check for updates every 3 minutes if the game is not running
-  const intervalId = setInterval(() => {
+  // Will check for updates every 4 minutes if the game is not running
+  setInterval(() => {
     if (!game.isGameRunning()) {
       try {
         autoUpdater.checkForUpdates()
@@ -93,7 +93,7 @@ if (app.isPackaged && !(processArg == '--squirrel-firstrun')) {
     } else {
       log.info("Listening to the game")
     }
-  }, 180000)
+  }, 240000)
 
   autoUpdater.on('update-downloaded', (_event, releaseNotes, releaseName) => {
     log.info('Update complete', releaseName);
