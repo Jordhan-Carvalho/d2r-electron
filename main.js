@@ -20,7 +20,7 @@ const createWindow = () => {
     },
     title: `Dota 2 Reminders - v${appVersion}`,
     autoHideMenuBar,
-    icon : path.join(__dirname, '/assets/dota2reminders.ico'),
+    icon: path.join(__dirname, '/assets/dota2reminders.ico'),
   })
 
   mainWindow.loadFile('./home/home.html')
@@ -44,13 +44,13 @@ app.whenReady().then(() => {
   ipcMain.handle('store:get', store.handleStoreGet)
   createWindow()
 
-ga4.registerEvent({
+  ga4.registerEvent({
     name: "app_opened",
     params: {
       version: app.getVersion(),
     }
   })
-  
+
 })
 
 // quit if all windows are closed (default on mac)
@@ -60,7 +60,7 @@ app.on('window-all-closed', () => {
 
 const processArg = process.argv[1];
 
-if (processArg == '--squirrel-firstrun') { 
+if (processArg == '--squirrel-firstrun') {
   ga4.registerEvent({
     name: "first_time_run",
     params: {
@@ -71,20 +71,29 @@ if (processArg == '--squirrel-firstrun') {
 
 if (app.isPackaged && !(processArg == '--squirrel-firstrun')) {
   log.info('Updating from version:', app.getVersion());
-  
+
   const updateServer = "https://d2r-electron-server-release.vercel.app"
 
   const url = `${updateServer}/update/${process.platform}/${app.getVersion()}`
-  
+
   autoUpdater.setFeedURL({ url })
-  
-  // Will check for updates every 5 minutes
-  setInterval(() => {
-    autoUpdater.checkForUpdates()
-    ga4.registerEvent({
-      name: "update_check",
-    })
-  }, 300000)
+
+  // Will check for updates every 3 minutes if the game is not running
+  const intervalId = setInterval(() => {
+    if (!game.isGameRunning()) {
+      try {
+        autoUpdater.checkForUpdates()
+        ga4.registerEvent({
+          name: "update_check",
+        })
+      } catch (error) {
+        log.error(error)
+      }
+
+    } else {
+      log.info("Listening to the game")
+    }
+  }, 180000)
 
   autoUpdater.on('update-downloaded', (_event, releaseNotes, releaseName) => {
     log.info('Update complete', releaseName);
@@ -105,7 +114,7 @@ if (app.isPackaged && !(processArg == '--squirrel-firstrun')) {
       detail:
         'A new version has been downloaded. Restart the application to apply the updates.',
     }
-  
+
     dialog.showMessageBox(dialogOpts).then((returnValue) => {
       if (returnValue.response === 0) autoUpdater.quitAndInstall()
     })
