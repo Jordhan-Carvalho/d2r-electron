@@ -78,15 +78,22 @@ if (app.isPackaged && !(processArg == '--squirrel-firstrun')) {
 
   autoUpdater.setFeedURL({ url })
 
-  // Will check for updates every 5 minutes
-  setInterval(() => {
-    if (game.gameRunnig) {
-      autoUpdater.checkForUpdates()
-      ga4.registerEvent({
-        name: "update_check",
-      })
+  // Will check for updates every 3 minutes if the game is not running
+  const intervalId = setInterval(() => {
+    if (!game.isGameRunning()) {
+      try {
+        autoUpdater.checkForUpdates()
+        ga4.registerEvent({
+          name: "update_check",
+        })
+      } catch (error) {
+        log.error(error)
+      }
+
+    } else {
+      log.info("Listening to the game")
     }
-  }, 300000)
+  }, 180000)
 
   autoUpdater.on('update-downloaded', (_event, releaseNotes, releaseName) => {
     log.info('Update complete', releaseName);

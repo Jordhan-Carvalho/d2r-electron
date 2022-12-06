@@ -9,29 +9,33 @@ let DAYTIME_CALLED = false
 let NIGHT_CALLED = false
 let LAST_GAME_TIME = 0
 let STORE_DATA = store.getAllData()
-let IS_GAME_RUNNING
+let IS_GAME_RUNNING = null
 let LAST_TIME_EVENT_RECEIVED = null
 
 
-const checkForGameRunning = () => {
-  const secondsIddle = 60
+const isGameRunning = () => {
+  return IS_GAME_RUNNING
+}
 
-  if (!LAST_TIME_EVENT_RECEIVED) {
-    log.info("Game started")
+const checkForGameRunning = () => {
+  const secondsIddle = 45
+
+if (!LAST_TIME_EVENT_RECEIVED) {
+  const intervalId = setInterval(() => {
+    const timeNow = Math.floor(new Date().getTime() / 1000);
+
+    if ((LAST_TIME_EVENT_RECEIVED + secondsIddle) < timeNow) {
+      IS_GAME_RUNNING = false
+      LAST_TIME_EVENT_RECEIVED = null;
+      clearInterval(intervalId)
+    }
+  }, 20000)
+}
+
     LAST_TIME_EVENT_RECEIVED = Math.floor(new Date().getTime() / 1000);
     IS_GAME_RUNNING = true
 
-    const intervalId = setInterval(() => {
-      console.log("checking if game is running")
-      const timeNow = Math.floor(new Date().getTime() / 1000);
-      if ((LAST_TIME_EVENT_RECEIVED + secondsIddle) > timeNow) {
-        IS_GAME_RUNNING = false
-        LAST_TIME_EVENT_RECEIVED = null;
-        clearInterval(intervalId)
-      }
-    }, 30000)
-
-  }
+  
 }
 
 
@@ -242,6 +246,6 @@ module.exports = {
   onNewGameEvent,
   handleRoshanConfig,
   checkForGameRunning,
-  gameRunnig: IS_GAME_RUNNING
+  isGameRunning
 }
 
