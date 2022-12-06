@@ -1,6 +1,7 @@
 const sound = require("sound-play");
+const log = require('electron-log');
 const path = require("path");
-const store = require("../store/store.js")
+const store = require("../store/store.js");
 
 let LAST_CALL_BUY_WARDS = 0
 let LAST_CALL_TOWER_DENY = 0
@@ -8,6 +9,31 @@ let DAYTIME_CALLED = false
 let NIGHT_CALLED = false
 let LAST_GAME_TIME = 0
 let STORE_DATA = store.getAllData()
+let IS_GAME_RUNNING
+let LAST_TIME_EVENT_RECEIVED = null
+
+
+const checkForGameRunning = () => {
+  const secondsIddle = 60
+
+  if (!LAST_TIME_EVENT_RECEIVED) {
+    log.info("Game started")
+    LAST_TIME_EVENT_RECEIVED = Math.floor(new Date().getTime() / 1000);
+    IS_GAME_RUNNING = true
+
+    const intervalId = setInterval(() => {
+      console.log("checking if game is running")
+      const timeNow = Math.floor(new Date().getTime() / 1000);
+      if ((LAST_TIME_EVENT_RECEIVED + secondsIddle) > timeNow) {
+        IS_GAME_RUNNING = false
+        LAST_TIME_EVENT_RECEIVED = null;
+        clearInterval(intervalId)
+      }
+    }, 30000)
+
+  }
+}
+
 
 let roshanConfig = {
   active: false,
@@ -15,7 +41,7 @@ let roshanConfig = {
 }
 
 const handleRoshanConfig = (_event, newRoshanConfig) => {
-  roshanConfig = {...roshanConfig, ...newRoshanConfig}
+  roshanConfig = { ...roshanConfig, ...newRoshanConfig }
 }
 
 function storeChangeCallback(newValue, _oldValue) {
@@ -32,7 +58,7 @@ const checkForTowerDeny = (gameTime, buildings) => {
   const timeBetweenCalls = 10
 
   for (const building in buildings[team]) {
-    if (building.includes('tower') && (LAST_CALL_TOWER_DENY+timeBetweenCalls) <= gameTime) {
+    if (building.includes('tower') && (LAST_CALL_TOWER_DENY + timeBetweenCalls) <= gameTime) {
       const lane = building.split('_')[3]
       const maxHealth = buildings[team][building].max_health
       const currentHealth = buildings[team][building].health
@@ -64,59 +90,59 @@ const checkForDaytime = (isDaytime) => {
 }
 
 const checkForRoshanAndAegis = (gameTime, deathTime) => {
-  const	roshanMinTime = 469
+  const roshanMinTime = 469
   // roshanMinSpawnDelay := 480
   const roshanMaxTime = 659
   // roshanMaxSpawnDelay := 660
   const aegis2minWarnTime = 180
   const aegis30sWarnTime = 271
-  const aegis10sWarnTime = 291 
+  const aegis10sWarnTime = 291
   const aegisExpiredTime = 302
 
-  if (deathTime+aegis2minWarnTime === gameTime) {
+  if (deathTime + aegis2minWarnTime === gameTime) {
     const filePath = path.join(__dirname, "../sound/aegis-2min.mp3");
     sound.play(filePath);
-  } 
-  else if (deathTime+aegis30sWarnTime === gameTime) {
+  }
+  else if (deathTime + aegis30sWarnTime === gameTime) {
     const filePath = path.join(__dirname, "../sound/aegis-30s.mp3");
     sound.play(filePath);
-  } 
-  else if (deathTime+aegis10sWarnTime === gameTime) {
+  }
+  else if (deathTime + aegis10sWarnTime === gameTime) {
     const filePath = path.join(__dirname, "../sound/aegis-10s.mp3");
     sound.play(filePath);
-  } 
-  else if (deathTime+aegisExpiredTime === gameTime) {
+  }
+  else if (deathTime + aegisExpiredTime === gameTime) {
     const filePath = path.join(__dirname, "../sound/aegis-expired.mp3");
     sound.play(filePath);
-  } 
-  else if (deathTime+roshanMinTime === gameTime) {
+  }
+  else if (deathTime + roshanMinTime === gameTime) {
     const filePath = path.join(__dirname, "../sound/roshan-min.mp3");
     sound.play(filePath);
-  } 
-  else if (deathTime+roshanMaxTime === gameTime) {
+  }
+  else if (deathTime + roshanMaxTime === gameTime) {
     const filePath = path.join(__dirname, "../sound/roshan-max.mp3");
     sound.play(filePath);
-  } 
+  }
 
 }
 
 const checkForStack = (gameTime) => {
   const stackTime = 60
   const stackDelay = store.handleStoreGet(null, "stack").delay
-  const stackAlertTime = stackTime - stackDelay 
+  const stackAlertTime = stackTime - stackDelay
 
-  if ((gameTime-stackAlertTime)%stackTime === 0) {
+  if ((gameTime - stackAlertTime) % stackTime === 0) {
     const filePath = path.join(__dirname, "../sound/stack.mp3");
     sound.play(filePath);
   }
-} 
+}
 
 const checkForMidRunes = (gameTime) => {
   const midRunesTime = 120;
   const midRunesDelay = store.handleStoreGet(null, "midrunes").delay
   const midRunesAlertTime = midRunesTime - midRunesDelay
 
-  if ((gameTime-midRunesAlertTime)%midRunesTime === 0) {
+  if ((gameTime - midRunesAlertTime) % midRunesTime === 0) {
     const filePath = path.join(__dirname, "../sound/mid-rune.mp3");
     sound.play(filePath);
   }
@@ -125,9 +151,9 @@ const checkForMidRunes = (gameTime) => {
 const checkForBountyRunes = (gameTime) => {
   const bountyRunesTime = 180;
   const bountyRunesDelay = store.handleStoreGet(null, "bountyrunes").delay
-  const bountyRunesAlertTime = bountyRunesTime - bountyRunesDelay 
+  const bountyRunesAlertTime = bountyRunesTime - bountyRunesDelay
 
-  if ((gameTime-bountyRunesAlertTime)%bountyRunesTime === 0) {
+  if ((gameTime - bountyRunesAlertTime) % bountyRunesTime === 0) {
     const filePath = path.join(__dirname, "../sound/bounty-runes.mp3");
     sound.play(filePath);
   }
@@ -138,7 +164,7 @@ const checkNeutralItems = (gameTime) => {
 
   for (let i = 0; i < neutralItemsTime.length; i++) {
     if (gameTime === neutralItemsTime[i]) {
-      const filePath = path.join(__dirname, `../sound/neutralTier${i+1}.mp3`);
+      const filePath = path.join(__dirname, `../sound/neutralTier${i + 1}.mp3`);
       sound.play(filePath);
     }
   }
@@ -149,7 +175,7 @@ const checkForSmoke = (gameTime) => {
   const smokeDelay = store.handleStoreGet(null, "smoke").delay
   const smokeAlertTime = smokeTime - smokeDelay
 
-  if((gameTime-smokeAlertTime)%smokeTime === 0) {
+  if ((gameTime - smokeAlertTime) % smokeTime === 0) {
     const filePath = path.join(__dirname, "../sound/smoke.mp3");
     sound.play(filePath);
   }
@@ -160,7 +186,7 @@ const checkForWards = (gameTime, wardCd) => {
   if (LAST_CALL_BUY_WARDS > gameTime) LAST_CALL_BUY_WARDS = 0
   const timeBetweenCalls = 30
 
-  if (wardCd === 0 && (LAST_CALL_BUY_WARDS+timeBetweenCalls) <= gameTime) {
+  if (wardCd === 0 && (LAST_CALL_BUY_WARDS + timeBetweenCalls) <= gameTime) {
     const filePath = path.join(__dirname, "../sound/wards.mp3");
     sound.play(filePath);
     LAST_CALL_BUY_WARDS = gameTime
@@ -168,7 +194,7 @@ const checkForWards = (gameTime, wardCd) => {
 
 }
 
-const onNewGameEvent= async (gameEvent) => {
+const onNewGameEvent = async (gameEvent) => {
   if (gameEvent.map && gameEvent.map.game_state === 'DOTA_GAMERULES_STATE_GAME_IN_PROGRESS') {
     const gameTime = gameEvent.map.clock_time
     const wardsPurchaseCd = gameEvent.map.ward_purchase_cooldown
@@ -181,10 +207,10 @@ const onNewGameEvent= async (gameEvent) => {
     if (STORE_DATA.stack.active) {
       checkForStack(gameTime)
     }
-    if(STORE_DATA.midrunes.active) {
+    if (STORE_DATA.midrunes.active) {
       checkForMidRunes(gameTime)
     }
-    if(STORE_DATA.bountyrunes.active) {
+    if (STORE_DATA.bountyrunes.active) {
       checkForBountyRunes(gameTime)
     }
     if (STORE_DATA.neutral.active) {
@@ -214,6 +240,8 @@ store.onStoreChange(storeChangeCallback)
 
 module.exports = {
   onNewGameEvent,
-  handleRoshanConfig
+  handleRoshanConfig,
+  checkForGameRunning,
+  gameRunnig: IS_GAME_RUNNING
 }
 

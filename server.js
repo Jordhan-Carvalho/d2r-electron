@@ -23,6 +23,7 @@ const startServer = () => {
           const gameEvent = JSON.parse(jsonRespString)
           
           game.onNewGameEvent(gameEvent) 
+          game.checkForGameRunning()
         } catch (error) {
           log.error("Error parsing game event", error)
           log.info("Data trying to parse", jsonRespString)
