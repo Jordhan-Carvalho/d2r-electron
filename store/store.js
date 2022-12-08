@@ -49,15 +49,31 @@ function getAllData() {
   return parsedData
 }
 
+function onVolumeChange(callback) {
+  userStore.onDidChange("volume", callback)
+} 
 
 function onStoreChange(callback) {
   store.onDidAnyChange(callback);
 }
 
+
+function handleUserStoreSet(_event, key, value) {
+  userStore.set(key, value)
+}
+
+function handleUserStoreGet(_event, key) {
+  const value = userStore.get(key, null) 
+  return value
+}
+
 module.exports = {
   handleStoreGet,
   handleStoreSet,
+  handleUserStoreGet,
+  handleUserStoreSet,
   getAllData,
   onStoreChange,
+  onVolumeChange,
   userStore
 } 
