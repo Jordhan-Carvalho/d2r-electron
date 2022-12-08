@@ -61,7 +61,6 @@ If you never used overwolf you probably do not have the gamestate_integration fo
 - Roshan shortcut (use the current ingame time and activate the roshan timer)
 - Record video of app demo and installation
 - Optional set reminder when watching games
-- Volume of the alerts
 - Ability to add custom reminders
 - Dark Mode
 - Turbo game mode

@@ -121,10 +121,10 @@ content="default-src 'self'; script-src 'self'"
 
       <!-- -------------------------------- Left Container ------------------------------- -->
       <div class="left-container">
-        <div class="plus-container">
-          <h2 class="delay-title">Set the reminder delay:</h2>
+        <h2 class="delay-title">Set the reminder delay:</h2>
+        <div class="settings-container">
           <p class="delay-text">* How many seconds to trigger the alert before the actual event</p>
-          <div class="row">
+          <div class="new-row">
             <div class="input-field col s6">
               <input id="stack-delay" type="number" class="validate" value="13" min="0" max="30">
               <label for="stack-delay">Stack</label>
@@ -133,17 +133,26 @@ content="default-src 'self'; script-src 'self'"
               <input id="midrunes-delay" type="number" class="validate" value="4" min="0" max="30">
               <label for="midrunes-delay">Mid Runes</label>
             </div>
-          </div>
 
-          <div class="row">
             <div class="input-field col s6">
               <input id="neutral-delay" type="number" class="validate" value="1" min="0" max="30">
               <label for="neutral-delay">Neutral Items</label>
             </div>
+
             <div class="input-field col s6">
               <input id="bountyrunes-delay" type="number" class="validate" value="2" min="0" max="30">
               <label for="bountyrunes-delay">Bounty Runes</label>
             </div>
+          </div>
+        </div>
+
+        <div class="volume-container">
+          <h2>Reminders Volume</h2>
+          <div class="volume-container-actions">
+            <a class="waves-effect waves-light btn" id="test-sound">Test Sound</a>
+            <p class="range-field">
+              <input id="volume-input" type="range" id="test5" min="0" max="0.9" step="0.1" />
+            </p>
           </div>
         </div>
       </div>

@@ -34,6 +34,7 @@ main {
 .left-container{
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   height: 100%;
   width: 50%;
   padding-left: 10px;
@@ -112,4 +113,32 @@ input[type="number"]
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.volume-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.volume-container-actions {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.volume-container-actions a {
+  margin-right: 20px;
+}
+
+.volume-container-actions p {
+  width: 45%;
+}
+
+.new-row {
+  display: flex;
+  justify-content: space-between;
 }

@@ -1,18 +1,18 @@
 const setRoshanInputMask = () => {
-const roshanInput = document.getElementById("roshan-timer")
+  const roshanInput = document.getElementById("roshan-timer")
 
-Inputmask("05:59:59", {
+  Inputmask("05:59:59", {
     placeholder: "HH:MM:SS",
     insertMode: false,
     showMaskOnHover: false,
     definitions: {
-        '5': {
-            validator: "[0-5]",
-            cardinality: 1
-        }
+      '5': {
+        validator: "[0-5]",
+        cardinality: 1
+      }
     }
   }).mask(roshanInput);
-} 
+}
 
 const convertFullTimeToSeconds = (time) => {
   const date = new Date()
@@ -24,36 +24,62 @@ const convertFullTimeToSeconds = (time) => {
 }
 
 
-// roshan... active and death time
+// roshan... NOT PERSISTENT 
 const roshanListener = () => {
-  const checkBox = document.getElementById(`roshan-checkbox`) 
+  const checkBox = document.getElementById(`roshan-checkbox`)
   checkBox.addEventListener('change', () => {
-    const roshanConfig = { active: checkBox.checked } 
+    const roshanConfig = { active: checkBox.checked }
 
     window.mainApi.setRoshanConfig(roshanConfig)
   })
 
-  const deathInputElem =  document.getElementById("roshan-timer")
+  const deathInputElem = document.getElementById("roshan-timer")
 
   deathInputElem.addEventListener('change', () => {
     const timeInSeconds = convertFullTimeToSeconds(deathInputElem.value)
-    const roshanConfig = { time: timeInSeconds}
+    const roshanConfig = { time: timeInSeconds }
 
     window.mainApi.setRoshanConfig(roshanConfig)
 
   })
 }
 
+const playTestSoundListener = () => {
+  const playButtonElem = document.getElementById("test-sound")
+
+  playButtonElem.addEventListener("click", async() => {
+    await window.mainApi.playTestSound()
+  })
+
+}
+
+// Volume
+const volumeListener = async () => {
+  const volumeInputElem = document.getElementById("volume-input")
+  const value = String(await window.mainApi.userStoreGet("volume"))
+
+  if (value) {
+    volumeInputElem.value = String(value)
+  } else {
+    volumeInputElem.value = 0.5
+  }
+
+  volumeInputElem.addEventListener('change', async () => {
+    const volume = Number(volumeInputElem.value)
+    await window.mainApi.userStoreSet("volume", volume)
+  })
+}
+
 // This will set the html input values for the checkbox and input
 const setHTMLvalues = async (reminderName, values) => {
-  const checkBox = document.getElementById(`${reminderName}-checkbox`) 
+  const checkBox = document.getElementById(`${reminderName}-checkbox`)
   checkBox.checked = values.active
 
-  checkBox.addEventListener('change', async() => {
+  checkBox.addEventListener('change', async () => {
     const reminderValues = await window.mainApi.storeGet(reminderName)
-    const newValue = {...reminderValues} 
+    const newValue = { ...reminderValues }
     if (checkBox.checked) {
-      newValue.active =  true
+      newValue.active = true
     } else {
       newValue.active = false
     }
@@ -69,7 +95,7 @@ const setHTMLvalues = async (reminderName, values) => {
     delayElem.addEventListener('change', async () => {
       const reminderValues = await window.mainApi.storeGet(reminderName)
 
-      const newValue = {...reminderValues}
+      const newValue = { ...reminderValues }
       newValue.delay = Number(delayElem.value)
 
       await window.mainApi.storeSet(reminderName, newValue)
@@ -81,16 +107,16 @@ const setHTMLvalues = async (reminderName, values) => {
 }
 
 
-const getUserConfiguration = async() => {
-  const defaultConfigObj = {stack: { active: false , delay: 13} , midrunes: {active: true, delay: 4}, bountyrunes: {active: true, delay: 3}, neutral: {active: true, delay:0}, smoke: {active: true, delay: 1}, ward: {active: true, delay: 0}, daytime: {active: true, delay: 0}, tower: {active: true, delay:0}}
+const getUserConfiguration = async () => {
+  const defaultConfigObj = { stack: { active: false, delay: 13 }, midrunes: { active: true, delay: 4 }, bountyrunes: { active: true, delay: 3 }, neutral: { active: true, delay: 0 }, smoke: { active: true, delay: 1 }, ward: { active: true, delay: 0 }, daytime: { active: true, delay: 0 }, tower: { active: true, delay: 0 } }
   // get the values from the store
   for (const key in defaultConfigObj) {
-    const value = await window.mainApi.storeGet(key) 
+    const value = await window.mainApi.storeGet(key)
 
     if (value) {
       defaultConfigObj[key].delay = value.delay
       defaultConfigObj[key].active = value.active
-    } 
+    }
   }
 
 
@@ -110,5 +136,7 @@ const setVersion = () => {
 
 setRoshanInputMask()
 roshanListener()
+volumeListener()
+playTestSoundListener()
 setVersion()
 getUserConfiguration()

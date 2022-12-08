@@ -42,6 +42,9 @@ app.whenReady().then(() => {
   ipcMain.on('set-roshan-config', game.handleRoshanConfig)
   ipcMain.handle('store:set', store.handleStoreSet)
   ipcMain.handle('store:get', store.handleStoreGet)
+  ipcMain.handle('userStore:get', store.handleUserStoreGet)
+  ipcMain.handle('userStore:set', store.handleUserStoreSet)
+  ipcMain.handle('playTestSound', game.playTestSound)
   createWindow()
 
   ga4.registerEvent({
