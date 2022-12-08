@@ -1,5 +1,4 @@
 const sound = require("../helpers/soundPlay.js");
-const log = require('electron-log');
 const path = require("path");
 const store = require("../store/store.js");
 
@@ -11,7 +10,7 @@ let LAST_GAME_TIME = 0
 let STORE_DATA = store.getAllData()
 let IS_GAME_RUNNING = null
 let LAST_TIME_EVENT_RECEIVED = null
-let VOLUME = 0.5
+let VOLUME = store.handleUserStoreGet(null, "volume")
 
 
 const isGameRunning = () => {
