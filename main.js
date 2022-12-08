@@ -83,6 +83,9 @@ if (app.isPackaged && !(processArg == '--squirrel-firstrun')) {
 
   // Will check for updates every 4 minutes if the game is not running
   setInterval(() => {
+    ga4.registerEvent({
+      name: "routine_check",
+    })
     if (!game.isGameRunning()) {
       try {
         autoUpdater.checkForUpdates()
