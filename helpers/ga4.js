@@ -3,8 +3,12 @@ const { v4: uuidv4 } = require('uuid');
 const store = require("../store/store.js")
 const axios = require('axios')
 
-const { optionalRequire } = require("optional-require");
-const configEnv = optionalRequire("../config-envs")
+let configEnv = null;
+try {
+  configEnv = require("../config-envs") 
+} catch (error) {
+  log.error("Error requiring config envs", error)
+}
 
 const measurementId = configEnv ? configEnv.MEASUREMENT_ID : "dev"
 const analyticsApi = configEnv ? configEnv.ANALYTICS_API : "dev"
