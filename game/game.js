@@ -101,6 +101,41 @@ const checkForDaytime = (isDaytime) => {
   }
 }
 
+const startAegisCount = (pickUpTime) => {
+  const aegisWarnTimes = {
+    aegis2min: 180,
+    aegis30s: 271,
+    aegis10s: 291,
+    aegisExpired: 302
+  }
+  // it will start a timer that will fire after pickUpTime + aegisWarnTime
+  for (const property in aegisWarnTimes) {
+    console.log(`${property}: ${aegisWarnTimes[property]}`);
+    setTimeout(() => {
+      const filePath = path.join(__dirname, `../sound/${property}.mp3`);
+      sound.play(filePath, VOLUME);
+    }, aegisWarnTimes[property] * 1000);
+  }
+}
+
+const startRoshanCount = (deathTime) => {
+  // roshanMinSpawnDelay := 480
+  // roshanMaxSpawnDelay := 660
+  const roshanWarnTime = {
+    roshanMin: 469,
+    roshanMax: 659
+  }
+
+  for (const property in roshanWarnTime) {
+    console.log(`${property}: ${roshanWarnTime[property]}`);
+    setTimeout(() => {
+      const filePath = path.join(__dirname, `../sound/${property}.mp3`);
+      sound.play(filePath, VOLUME);
+    }, roshanWarnTime[property] * 1000);
+  }
+}
+
+/* DEPRECATED IN FAVOR OF GSI ROSHAN
 const checkForRoshanAndAegis = (gameTime, deathTime) => {
   const roshanMinTime = 469
   // roshanMinSpawnDelay := 480
@@ -137,6 +172,7 @@ const checkForRoshanAndAegis = (gameTime, deathTime) => {
   }
 
 }
+*/
 
 const checkForStack = (gameTime) => {
   const stackTime = 60
@@ -207,11 +243,17 @@ const checkForWards = (gameTime, wardCd) => {
 }
 
 const onNewGameEvent = async (gameEvent) => {
+
   if (gameEvent.map && gameEvent.map.game_state === 'DOTA_GAMERULES_STATE_GAME_IN_PROGRESS') {
     const gameTime = gameEvent.map.clock_time
     const wardsPurchaseCd = gameEvent.map.ward_purchase_cooldown
     const isDaytime = gameEvent.map.daytime
     const buildings = gameEvent.buildings
+    // CHECK THE EVENTS
+    
+    console.log("GAME EVENTS",gameEvent.events)
+
+      
 
     if (LAST_GAME_TIME === gameTime) return
     if (LAST_GAME_TIME > gameTime) LAST_GAME_TIME = 0
@@ -240,9 +282,27 @@ const onNewGameEvent = async (gameEvent) => {
     if (STORE_DATA.tower.active) {
       checkForTowerDeny(gameTime, buildings)
     }
+
+    // check the game events for aegis or roshan kills
+    if (gameEvent.events && gameEvent.events.length > 0) {
+      for (let i = 0; i < gameEvent.events.length; i++) {
+        const event = gameEvent.events[i]
+        if (event.event_type === 'roshan_killed' && STORE_DATA.roshan.active) {
+          console.log("ROSHAN KILLED")
+          startRoshanCount(gameTime)
+        } else if (event.event_type === 'aegis_picked_up' && STORE_DATA.aegis.active) {
+          console.log("AEGIS PICKED")
+          startAegisCount(gameTime);
+        }
+        }
+    }
+
+    
+    /*
     if (roshanConfig.active && roshanConfig.time > 0) {
       checkForRoshanAndAegis(gameTime, roshanConfig.time)
     }
+    */
 
     LAST_GAME_TIME = gameTime
   }

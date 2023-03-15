@@ -14,13 +14,7 @@ h2 {
 
 main {
   display: flex;
-  border-bottom: 1px solid teal;
-  height: 50%;
-}
-
-.bottom-row {
-  display: flex;
-  height: 50%;
+  height: 100%;
 }
 
 .alerts-container{
@@ -41,11 +35,18 @@ main {
   border-left: 1px solid teal;
 }
 
-.bottom-right-container {
+.left-upper-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  width: 50%;
+  justify-content: space-between;
+  height: 40%;
+  border-bottom: 1px solid teal;
+}
+
+.left-bottom-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 20px 0;
   padding-right: 10px;
 }

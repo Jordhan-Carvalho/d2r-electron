@@ -23,6 +23,15 @@ const schema = {
 	},
   daytime: {
     type: 'string'
+  },
+  tower: {
+    type: 'string'
+  },
+  roshan: {
+    type: 'string'
+  },
+  aegis: {
+    type: 'string'
   }
 };
 
