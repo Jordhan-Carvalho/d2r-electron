@@ -11,6 +11,9 @@ let STORE_DATA = store.getAllData()
 let IS_GAME_RUNNING = null
 let LAST_TIME_EVENT_RECEIVED = null
 let VOLUME = store.handleUserStoreGet(null, "volume")
+let PAST_EVENTS = []
+let ROSHAN_DEAD = null
+let AEGIS_PICKED = null
 
 
 const isGameRunning = () => {
@@ -27,6 +30,9 @@ const checkForGameRunning = () => {
       if ((LAST_TIME_EVENT_RECEIVED + secondsIddle) < timeNow) {
         IS_GAME_RUNNING = false
         LAST_TIME_EVENT_RECEIVED = null;
+        PAST_EVENTS = []
+        ROSHAN_DEAD = null
+        AEGIS_PICKED = null
         clearInterval(intervalId)
       }
     }, 20000)
@@ -37,8 +43,8 @@ const checkForGameRunning = () => {
 }
 
 const playTestSound = () => {
-    const filePath = path.join(__dirname, "../sound/test-sound.mp3");
-    sound.play(filePath, VOLUME);
+  const filePath = path.join(__dirname, "../sound/test-sound.mp3");
+  sound.play(filePath, VOLUME);
 }
 
 
@@ -101,39 +107,48 @@ const checkForDaytime = (isDaytime) => {
   }
 }
 
-const startAegisCount = (pickUpTime) => {
-  const aegisWarnTimes = {
-    aegis2min: 180,
-    aegis30s: 271,
-    aegis10s: 291,
-    aegisExpired: 302
+const checkForRoshanWarnTime = (gameTime, deathTime) => {
+  const roshanMin = 469
+  const roshanMax = 659
+
+  if (deathTime + roshanMin === gameTime) {
+    const filePath = path.join(__dirname, "../sound/roshanMin.mp3");
+    sound.play(filePath, VOLUME);
   }
-  // it will start a timer that will fire after pickUpTime + aegisWarnTime
-  for (const property in aegisWarnTimes) {
-    console.log(`${property}: ${aegisWarnTimes[property]}`);
-    setTimeout(() => {
-      const filePath = path.join(__dirname, `../sound/${property}.mp3`);
-      sound.play(filePath, VOLUME);
-    }, aegisWarnTimes[property] * 1000);
+  else if (deathTime + roshanMax === gameTime) {
+    const filePath = path.join(__dirname, "../sound/roshanMax.mp3");
+    sound.play(filePath, VOLUME);
+  } else if (deathTime + roshanMax < gameTime) {
+    ROSHAN_DEAD = null
   }
 }
 
-const startRoshanCount = (deathTime) => {
-  // roshanMinSpawnDelay := 480
-  // roshanMaxSpawnDelay := 660
-  const roshanWarnTime = {
-    roshanMin: 469,
-    roshanMax: 659
-  }
+checkForAegisWarnTime = (gameTime, deathTime) => {
+  const aegis2minWarnTime = 180
+  const aegis30sWarnTime = 271
+  const aegis10sWarnTime = 291
+  const aegisExpiredTime = 302
 
-  for (const property in roshanWarnTime) {
-    console.log(`${property}: ${roshanWarnTime[property]}`);
-    setTimeout(() => {
-      const filePath = path.join(__dirname, `../sound/${property}.mp3`);
-      sound.play(filePath, VOLUME);
-    }, roshanWarnTime[property] * 1000);
+  if (deathTime + aegis2minWarnTime === gameTime) {
+    const filePath = path.join(__dirname, "../sound/aegis2min.mp3");
+    sound.play(filePath, VOLUME);
+  }
+  else if (deathTime + aegis30sWarnTime === gameTime) {
+    const filePath = path.join(__dirname, "../sound/aegis30s.mp3");
+    sound.play(filePath, VOLUME);
+  }
+  else if (deathTime + aegis10sWarnTime === gameTime) {
+    const filePath = path.join(__dirname, "../sound/aegis10s.mp3");
+    sound.play(filePath, VOLUME);
+  }
+  else if (deathTime + aegisExpiredTime === gameTime) {
+    const filePath = path.join(__dirname, "../sound/aegisExpired.mp3");
+    sound.play(filePath, VOLUME);
+  } else if (deathTime + aegisExpiredTime < gameTime) {
+    AEGIS_PICKED = null
   }
 }
+
 
 /* DEPRECATED IN FAVOR OF GSI ROSHAN
 const checkForRoshanAndAegis = (gameTime, deathTime) => {
@@ -249,11 +264,28 @@ const onNewGameEvent = async (gameEvent) => {
     const wardsPurchaseCd = gameEvent.map.ward_purchase_cooldown
     const isDaytime = gameEvent.map.daytime
     const buildings = gameEvent.buildings
-    // CHECK THE EVENTS
-    
-    console.log("GAME EVENTS",gameEvent.events)
 
-      
+
+    let newEvent = null;
+    // In-game events
+    const differentEvents = gameEvent.events.filter(newEvent => {
+      return !PAST_EVENTS.some(pastEvent => {
+        return `${pastEvent.event_type}-${pastEvent.game_time}` === `${newEvent.event_type}-${newEvent.game_time}`;
+      });
+    });
+    if (differentEvents.length > 0) {
+      newEvent = differentEvents[0]
+      PAST_EVENTS.push(newEvent)
+    }
+
+    if (newEvent) {
+      if (newEvent.event_type === 'roshan_killed' && STORE_DATA.roshan.active) {
+        ROSHAN_DEAD = gameTime
+      } else if (newEvent.event_type === 'aegis_picked_up' && STORE_DATA.aegis.active) {
+        AEGIS_PICKED = gameTime
+      }
+    }
+
 
     if (LAST_GAME_TIME === gameTime) return
     if (LAST_GAME_TIME > gameTime) LAST_GAME_TIME = 0
@@ -282,27 +314,12 @@ const onNewGameEvent = async (gameEvent) => {
     if (STORE_DATA.tower.active) {
       checkForTowerDeny(gameTime, buildings)
     }
-
-    // check the game events for aegis or roshan kills
-    if (gameEvent.events && gameEvent.events.length > 0) {
-      for (let i = 0; i < gameEvent.events.length; i++) {
-        const event = gameEvent.events[i]
-        if (event.event_type === 'roshan_killed' && STORE_DATA.roshan.active) {
-          console.log("ROSHAN KILLED")
-          startRoshanCount(gameTime)
-        } else if (event.event_type === 'aegis_picked_up' && STORE_DATA.aegis.active) {
-          console.log("AEGIS PICKED")
-          startAegisCount(gameTime);
-        }
-        }
+    if (ROSHAN_DEAD && STORE_DATA.roshan.active) {
+      checkForRoshanWarnTime(gameTime, ROSHAN_DEAD)
     }
-
-    
-    /*
-    if (roshanConfig.active && roshanConfig.time > 0) {
-      checkForRoshanAndAegis(gameTime, roshanConfig.time)
+    if (AEGIS_PICKED && STORE_DATA.aegis.active) {
+      checkForAegisWarnTime(gameTime, AEGIS_PICKED)
     }
-    */
 
     LAST_GAME_TIME = gameTime
   }

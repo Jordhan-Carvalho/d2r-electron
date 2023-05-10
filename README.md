@@ -58,6 +58,8 @@ If you never used overwolf you probably do not have the gamestate_integration fo
 
 
 ## Roadmap
+- 7.33 reminders (wisdom runes, lotus)
+- Tormentor reminder
 - Reminder to use Midas
 - Reminder about an ally being smoked
 - Roshan shortcut (use the current ingame time and activate the roshan timer)
