@@ -23,27 +23,6 @@ const convertFullTimeToSeconds = (time) => {
   return seconds
 }
 
-
-// roshan... NOT PERSISTENT 
-const roshanListener = () => {
-  const checkBox = document.getElementById(`roshan-checkbox`)
-  checkBox.addEventListener('change', () => {
-    const roshanConfig = { active: checkBox.checked }
-
-    window.mainApi.setRoshanConfig(roshanConfig)
-  })
-
-  const deathInputElem = document.getElementById("roshan-timer")
-
-  deathInputElem.addEventListener('change', () => {
-    const timeInSeconds = convertFullTimeToSeconds(deathInputElem.value)
-    const roshanConfig = { time: timeInSeconds }
-
-    window.mainApi.setRoshanConfig(roshanConfig)
-
-  })
-}
-
 const playTestSoundListener = () => {
   const playButtonElem = document.getElementById("test-sound")
 
@@ -108,7 +87,7 @@ const setHTMLvalues = async (reminderName, values) => {
 
 
 const getUserConfiguration = async () => {
-  const defaultConfigObj = { stack: { active: false, delay: 13 }, midrunes: { active: true, delay: 4 }, bountyrunes: { active: true, delay: 3 }, neutral: { active: true, delay: 0 }, smoke: { active: true, delay: 1 }, ward: { active: true, delay: 0 }, daytime: { active: true, delay: 0 }, tower: { active: true, delay: 0 } }
+  const defaultConfigObj = { stack: { active: false, delay: 13 }, midrunes: { active: true, delay: 4 }, bountyrunes: { active: true, delay: 3 }, neutral: { active: true, delay: 0 }, smoke: { active: true, delay: 1 }, ward: { active: true, delay: 0 }, daytime: { active: true, delay: 0 }, tower: { active: true, delay: 0 }, roshan: { active: true, delay: 0}, aegis: { active: true, delay: 0} }
   // get the values from the store
   for (const key in defaultConfigObj) {
     const value = await window.mainApi.storeGet(key)
@@ -135,7 +114,6 @@ const setVersion = () => {
 
 
 setRoshanInputMask()
-roshanListener()
 volumeListener()
 playTestSoundListener()
 setVersion()

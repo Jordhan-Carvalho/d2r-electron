@@ -39,7 +39,6 @@ const createWindow = () => {
 app.whenReady().then(() => {
   server.startServer()
   // handle/invoker on/send differences https://stackoverflow.com/questions/59889729/what-is-the-difference-between-ipc-send-on-and-invoke-handle-in-electron
-  ipcMain.on('set-roshan-config', game.handleRoshanConfig)
   ipcMain.handle('store:set', store.handleStoreSet)
   ipcMain.handle('store:get', store.handleStoreGet)
   ipcMain.handle('userStore:get', store.handleUserStoreGet)
