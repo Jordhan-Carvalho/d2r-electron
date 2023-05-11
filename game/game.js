@@ -47,17 +47,6 @@ const playTestSound = () => {
   sound.play(filePath, VOLUME);
 }
 
-
-let roshanConfig = {
-  active: false,
-  time: 0,
-}
-
-
-const handleRoshanConfig = (_event, newRoshanConfig) => {
-  roshanConfig = { ...roshanConfig, ...newRoshanConfig }
-}
-
 function storeChangeCallback(newValue, _oldValue) {
   const parsedNewValue = {}
   for (const key in newValue) {
@@ -148,46 +137,6 @@ checkForAegisWarnTime = (gameTime, deathTime) => {
     AEGIS_PICKED = null
   }
 }
-
-
-/* DEPRECATED IN FAVOR OF GSI ROSHAN
-const checkForRoshanAndAegis = (gameTime, deathTime) => {
-  const roshanMinTime = 469
-  // roshanMinSpawnDelay := 480
-  const roshanMaxTime = 659
-  // roshanMaxSpawnDelay := 660
-  const aegis2minWarnTime = 180
-  const aegis30sWarnTime = 271
-  const aegis10sWarnTime = 291
-  const aegisExpiredTime = 302
-
-  if (deathTime + aegis2minWarnTime === gameTime) {
-    const filePath = path.join(__dirname, "../sound/aegis-2min.mp3");
-    sound.play(filePath, VOLUME);
-  }
-  else if (deathTime + aegis30sWarnTime === gameTime) {
-    const filePath = path.join(__dirname, "../sound/aegis-30s.mp3");
-    sound.play(filePath, VOLUME);
-  }
-  else if (deathTime + aegis10sWarnTime === gameTime) {
-    const filePath = path.join(__dirname, "../sound/aegis-10s.mp3");
-    sound.play(filePath, VOLUME);
-  }
-  else if (deathTime + aegisExpiredTime === gameTime) {
-    const filePath = path.join(__dirname, "../sound/aegis-expired.mp3");
-    sound.play(filePath, VOLUME);
-  }
-  else if (deathTime + roshanMinTime === gameTime) {
-    const filePath = path.join(__dirname, "../sound/roshan-min.mp3");
-    sound.play(filePath, VOLUME);
-  }
-  else if (deathTime + roshanMaxTime === gameTime) {
-    const filePath = path.join(__dirname, "../sound/roshan-max.mp3");
-    sound.play(filePath, VOLUME);
-  }
-
-}
-*/
 
 const checkForStack = (gameTime) => {
   const stackTime = 60
@@ -330,7 +279,6 @@ store.onVolumeChange(volumeChangeCallback)
 
 module.exports = {
   onNewGameEvent,
-  handleRoshanConfig,
   checkForGameRunning,
   isGameRunning,
   playTestSound
