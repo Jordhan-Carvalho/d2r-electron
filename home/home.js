@@ -1,19 +1,3 @@
-const setRoshanInputMask = () => {
-  const roshanInput = document.getElementById("roshan-timer")
-
-  Inputmask("05:59:59", {
-    placeholder: "HH:MM:SS",
-    insertMode: false,
-    showMaskOnHover: false,
-    definitions: {
-      '5': {
-        validator: "[0-5]",
-        cardinality: 1
-      }
-    }
-  }).mask(roshanInput);
-}
-
 const convertFullTimeToSeconds = (time) => {
   const date = new Date()
   date.setHours(...time.split(":"))
@@ -113,7 +97,6 @@ const setVersion = () => {
 }
 
 
-setRoshanInputMask()
 volumeListener()
 playTestSoundListener()
 setVersion()
