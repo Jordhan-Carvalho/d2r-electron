@@ -32,7 +32,13 @@ const schema = {
   },
   aegis: {
     type: 'string'
-  }
+  },
+  wisdomrunes: {
+		type: 'string',
+	},
+  lotus: {
+		type: 'string',
+	},
 };
 
 const store = new Store({schema})

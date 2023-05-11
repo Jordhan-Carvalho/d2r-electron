@@ -160,6 +160,28 @@ const checkForMidRunes = (gameTime) => {
   }
 }
 
+const checkForWisdomRunes = (gameTime) => {
+  const wisdomRunesTime = 420;
+  const wisdomRunesDelay = store.handleStoreGet(null, "wisdomrunes").delay
+  const wisdomRunesAlertTime = wisdomRunesTime - wisdomRunesDelay
+
+  if ((gameTime - wisdomRunesAlertTime) % wisdomRunesTime === 0) {
+    const filePath = path.join(__dirname, "../sound/wisdom-rune.mp3");
+    sound.play(filePath, VOLUME);
+  }
+}
+
+const checkForLotus = (gameTime) => {
+  const lotusTime = 180;
+  const lotusDelay = store.handleStoreGet(null, "lotus").delay
+  const lotusAlertTime = lotusTime - lotusDelay
+
+  if ((gameTime - lotusAlertTime) % lotusTime === 0) {
+    const filePath = path.join(__dirname, "../sound/lotus.mp3");
+    sound.play(filePath, VOLUME);
+  }
+}
+
 const checkForBountyRunes = (gameTime) => {
   const bountyRunesTime = 180;
   const bountyRunesDelay = store.handleStoreGet(null, "bountyrunes").delay
@@ -262,6 +284,12 @@ const onNewGameEvent = async (gameEvent) => {
     }
     if (STORE_DATA.tower.active) {
       checkForTowerDeny(gameTime, buildings)
+    }
+    if (STORE_DATA.wisdomrunes.active) {
+      checkForWisdomRunes(gameTime)
+    }
+    if (STORE_DATA.lotus.active) {
+      checkForLotus(gameTime)
     }
     if (ROSHAN_DEAD && STORE_DATA.roshan.active) {
       checkForRoshanWarnTime(gameTime, ROSHAN_DEAD)
