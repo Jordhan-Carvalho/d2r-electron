@@ -40,6 +40,7 @@ Here are the download links:
 
 App:
 - https://d2r-electron-server-release.vercel.app
+
 CFG file:
 - https://gofile.io/d/uQqgpc
 - https://mega.nz/file/HQ9zjQzZ#99MNlznu33R_BUZ5h2TkT4p3rb6cQhIdebBFeTW4Qyk
