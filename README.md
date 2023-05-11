@@ -62,10 +62,9 @@ If you never used overwolf you probably do not have the gamestate_integration fo
 - Tormentor reminder
 - Reminder to use Midas
 - Reminder about an ally being smoked
-- Roshan shortcut (use the current ingame time and activate the roshan timer)
 - Record video of app demo and installation
 - Optional set reminder when watching games
-- Ability to add custom reminders
+- Custom reminders
 - Dark Mode
 - Turbo game mode
 - Config ESLINT

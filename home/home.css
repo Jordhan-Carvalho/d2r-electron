@@ -20,7 +20,7 @@ main {
 .alerts-container{
   display: flex;
   flex-direction: column;
-  height: 80%;
+  height: 100%;
   width: 50%;
   padding-right: 10px;
 }
@@ -28,7 +28,6 @@ main {
 .left-container{
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   height: 100%;
   width: 50%;
   padding-left: 10px;
@@ -39,7 +38,7 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 40%;
+  height: 50%;
   border-bottom: 1px solid teal;
 }
 
@@ -47,7 +46,8 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-right: 10px;
+  height: 50%;
+  padding: 10px 0;
 }
 
 .ads-container{
