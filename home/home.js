@@ -1,12 +1,3 @@
-const convertFullTimeToSeconds = (time) => {
-  const date = new Date()
-  date.setHours(...time.split(":"))
-
-  const seconds = date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds()
-
-  return seconds
-}
-
 const playTestSoundListener = () => {
   const playButtonElem = document.getElementById("test-sound")
 
@@ -71,7 +62,7 @@ const setHTMLvalues = async (reminderName, values) => {
 
 
 const getUserConfiguration = async () => {
-  const defaultConfigObj = { stack: { active: false, delay: 13 }, midrunes: { active: true, delay: 4 }, bountyrunes: { active: true, delay: 3 }, neutral: { active: true, delay: 0 }, smoke: { active: true, delay: 1 }, ward: { active: true, delay: 0 }, daytime: { active: true, delay: 0 }, tower: { active: true, delay: 0 }, roshan: { active: true, delay: 0}, aegis: { active: true, delay: 0} }
+  const defaultConfigObj = { stack: { active: false, delay: 13 }, midrunes: { active: true, delay: 4 }, bountyrunes: { active: true, delay: 3 }, neutral: { active: true, delay: 0 }, smoke: { active: true, delay: 1 }, ward: { active: true, delay: 0 }, daytime: { active: true, delay: 0 }, tower: { active: true, delay: 0 }, roshan: { active: true, delay: 0}, aegis: { active: true, delay: 0}, wisdomrunes: { active: true, delay: 6 }, lotus: { active: true, delay: 3 } }
   // get the values from the store
   for (const key in defaultConfigObj) {
     const value = await window.mainApi.storeGet(key)

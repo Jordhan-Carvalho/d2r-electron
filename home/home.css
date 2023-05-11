@@ -38,7 +38,6 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 50%;
   border-bottom: 1px solid teal;
 }
 
@@ -141,5 +140,5 @@ input[type="number"]
 
 .new-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
