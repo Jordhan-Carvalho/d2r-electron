@@ -23,29 +23,6 @@ const convertFullTimeToSeconds = (time) => {
   return seconds
 }
 
-
-/* TODO: DEPRECATED IN FAVOR OF THE ROSHAN GSI INFORMATION
-// roshan... NOT PERSISTENT 
-const roshanListener = () => {
-  const checkBox = document.getElementById(`roshan-checkbox`)
-  checkBox.addEventListener('change', () => {
-    const roshanConfig = { active: checkBox.checked }
-
-    window.mainApi.setRoshanConfig(roshanConfig)
-  })
-
-  const deathInputElem = document.getElementById("roshan-timer")
-
-  deathInputElem.addEventListener('change', () => {
-    const timeInSeconds = convertFullTimeToSeconds(deathInputElem.value)
-    const roshanConfig = { time: timeInSeconds }
-
-    window.mainApi.setRoshanConfig(roshanConfig)
-
-  })
-}
-*/
-
 const playTestSoundListener = () => {
   const playButtonElem = document.getElementById("test-sound")
 
@@ -137,7 +114,6 @@ const setVersion = () => {
 
 
 setRoshanInputMask()
-//roshanListener()
 volumeListener()
 playTestSoundListener()
 setVersion()
