@@ -1,6 +1,6 @@
 {
   "name": "d2r-electron",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "description": "Dota 2 Reminders - Electron",
   "main": "main.js",
   "scripts": {

@@ -22,6 +22,7 @@ This is a Windows app (based on Electron) that listens to events in your Dota 2 
   - Aegis (reminds at 2 minutes, 30 seconds, 10 seconds of the expiration)
   - Lotus 
   - Windom runes
+  - First tormentor
 - Allows you to add a delay (in seconds) to some reminders, such as stack and runes.
 
 ## How to install
@@ -42,8 +43,9 @@ App:
 - https://d2r-electron-server-release.vercel.app
 
 CFG file:
-- https://gofile.io/d/uQqgpc
-- https://mega.nz/file/HQ9zjQzZ#99MNlznu33R_BUZ5h2TkT4p3rb6cQhIdebBFeTW4Qyk
+- https://gofile.io/d/9nD2y9
+- https://mega.nz/file/zUEQEbgY#vBTxM_nbOhYUbdruY3XleiEzpcHDZQgSj4AXlVQUXl4
+- https://www.dropbox.com/s/ut1nkjsk138i8rc/gamestate_integration_d2reminders.cfg?dl=0
 
 
 
@@ -61,7 +63,7 @@ After enabling game state integration, copy the gamestate_integration_d2reminder
 
 
 ## Roadmap
-- Reminder of the Tormentor
+- Optimization
 - Reminder to use Midas
 - Reminder about an ally being smoked
 - Record video of app demo and installation

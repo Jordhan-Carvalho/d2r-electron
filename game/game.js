@@ -160,6 +160,15 @@ const checkForMidRunes = (gameTime) => {
   }
 }
 
+const checkForFirstTormentor = (gameTime) => {
+  const firstTormentorSpawnTime = 1200;
+
+  if (firstTormentorSpawnTime === gameTime) {
+    const filePath = path.join(__dirname, "../sound/tormentor.mp3");
+    sound.play(filePath, VOLUME);
+  }
+}
+
 const checkForWisdomRunes = (gameTime) => {
   const wisdomRunesTime = 420;
   const wisdomRunesDelay = store.handleStoreGet(null, "wisdomrunes").delay
@@ -290,6 +299,9 @@ const onNewGameEvent = async (gameEvent) => {
     }
     if (STORE_DATA.lotus.active) {
       checkForLotus(gameTime)
+    }
+    if (STORE_DATA.tormentor.active) {
+      checkForFirstTormentor(gameTime)
     }
     if (ROSHAN_DEAD && STORE_DATA.roshan.active) {
       checkForRoshanWarnTime(gameTime, ROSHAN_DEAD)
