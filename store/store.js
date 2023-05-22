@@ -39,6 +39,9 @@ const schema = {
   lotus: {
 		type: 'string',
 	},
+  tormentor: {
+    type: 'string',
+  }
 };
 
 const store = new Store({schema})
