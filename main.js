@@ -5,6 +5,7 @@ const store = require("./store/store.js")
 const server = require("./server.js")
 const game = require("./game/game.js")
 const ga4 = require("./helpers/ga4.js")
+const pathUtils = require("./helpers/pathUtils.js")
 
 
 if (require('electron-squirrel-startup')) return;
@@ -14,7 +15,7 @@ const appVersion = app.getVersion()
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
-    height: 700,
+    height: 800,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
@@ -44,6 +45,10 @@ app.whenReady().then(() => {
   ipcMain.handle('userStore:get', store.handleUserStoreGet)
   ipcMain.handle('userStore:set', store.handleUserStoreSet)
   ipcMain.handle('playTestSound', game.playTestSound)
+  ipcMain.handle('getDefaultDotaPath', pathUtils.getDefaultDotaPath),
+  ipcMain.handle('dota:checkCFG', pathUtils.checkCFGFileExists),
+  ipcMain.handle('dota:installCFG', pathUtils.copyCFGFile)
+
   createWindow()
 
   ga4.registerEvent({

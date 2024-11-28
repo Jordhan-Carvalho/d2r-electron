@@ -87,8 +87,60 @@ const setVersion = () => {
   })
 }
 
+const initDotaPath = async () => {
+  const dotaPathInput = document.getElementById('dota-path');
+  const installGsiBtn = document.getElementById('install-cfg');
+
+  // Get saved or default path
+  const savedPath = await window.mainApi.userStoreGet('dotaPath');
+  if (savedPath) {
+    dotaPathInput.value = savedPath;
+  } else {
+    const defaultPath = await window.mainApi.getDefaultDotaPath();
+    if (defaultPath) {
+      dotaPathInput.value = defaultPath;
+      await window.mainApi.userStoreSet('dotaPath', defaultPath);
+    }
+  }
+
+  // Check CFG status initially
+  updateCFGStatus();
+
+  // Add event listeners
+  dotaPathInput.addEventListener('change', async () => {
+    const newPath = dotaPathInput.value;
+    await window.mainApi.userStoreSet('dotaPath', newPath);
+    updateCFGStatus();
+  });
+
+  installGsiBtn.addEventListener('click', async () => {
+    const success = await window.mainApi.installCFG(dotaPathInput.value);
+    if (success) {
+      updateCFGStatus();
+    }
+  });
+};
+
+const updateCFGStatus = async () => {
+  const dotaPath = await window.mainApi.userStoreGet('dotaPath');
+  const cfgStatus = document.getElementById('cfg-status');
+  const installGsiBtn = document.getElementById('install-cfg');
+
+  const hasCFG = await window.mainApi.checkCFGStatus(dotaPath);
+  
+  if (hasCFG) {
+    cfgStatus.textContent = '✓ CFG Configured';
+    cfgStatus.className = 'cfg-status-green';
+    installGsiBtn.classList.add('hide');
+  } else {
+    cfgStatus.textContent = '✗ CFG Not Found';
+    cfgStatus.className = 'cfg-status-red';
+    installGsiBtn.classList.remove('hide');
+  }
+};
 
 volumeListener()
 playTestSoundListener()
 setVersion()
 getUserConfiguration()
+initDotaPath();
