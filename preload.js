@@ -15,5 +15,8 @@ contextBridge.exposeInMainWorld('mainApi', {
   storeGet: (key) => ipcRenderer.invoke('store:get', key),
   userStoreSet: (key, value) => ipcRenderer.invoke('userStore:set', key, value),
   userStoreGet: (key) => ipcRenderer.invoke('userStore:get', key),
-  playTestSound: () => ipcRenderer.invoke('playTestSound')
+  playTestSound: () => ipcRenderer.invoke('playTestSound'),
+  getDefaultDotaPath: () => ipcRenderer.invoke('getDefaultDotaPath'),
+  checkCFGStatus: () => ipcRenderer.invoke('dota:checkCFG'),
+  installCFG: () => ipcRenderer.invoke('dota:installCFG')
 })

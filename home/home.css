@@ -142,3 +142,64 @@ input[type="number"]
   display: flex;
   justify-content: space-around;
 }
+
+.settings-container {
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  margin-bottom: 20px;
+}
+
+.installation-container h2 {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.dota-path-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.dota-path-container label {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.dota-path-container input {
+  padding: 3px;
+  border: 1px solid teal;
+  border-radius: 4px;
+  height: 24px;
+  line-height: normal;
+  padding: 5;
+}
+
+.dota-path-container input[type="text"]
+{
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  height: 20px;
+}
+
+.cfg-status-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+  font-size: 8px;
+}
+
+.cfg-status-red {
+  color: red;
+}
+
+.cfg-status-green {
+  color: green;
+}
+
+.hide {
+  display: none;
+}

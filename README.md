@@ -37,16 +37,7 @@ To install the app, please follow these three steps:
 ### Step 1: Download the App or Build from Source
 You can either build the app from source code using Electron Forge CLI or download the installer and CFG file.
 
-Here are the download links:
-
-App:
-- https://d2r-electron-server-release.vercel.app
-
-CFG file:
-- https://gofile.io/d/9nD2y9
-- https://mega.nz/file/zUEQEbgY#vBTxM_nbOhYUbdruY3XleiEzpcHDZQgSj4AXlVQUXl4
-- https://www.dropbox.com/s/ut1nkjsk138i8rc/gamestate_integration_d2reminders.cfg?dl=0
-
+[Click here to download the app](https://d2r-electron-server-release.vercel.app).
 
 
 **Note: You may receive a warning about the app being an untrusted application. This is because Microsoft requires an annual fee for the Windows Authenticode code signing certificate, which is beyond my financial means.*
@@ -56,10 +47,19 @@ CFG file:
 To allow the app to receive in-game information from Dota, you need to enable game state integration. You can follow the Overwolf guide for instructions on how to do this:
 https://support.overwolf.com/en/support/solutions/articles/9000212745-how-to-enable-game-state-integration-for-dota-2
 
-After enabling game state integration, copy the gamestate_integration_d2reminders.cfg file to your Dota CFG folder. If you have never used Overwolf before, you may not have the gamestate_integration folder. In that case, create the folder manually.
-![DotaFolder](dev_assets.o/gamestatePath.png?raw=true "Gamestate path")
+And install the CFG file for Dota 2:
 
-**Note: The gamestate_integration_d2reminders.cfg is found on this repository and also included on the zip file*
+Use the "Install CFG" button (recommended)
+
+![Install CFG](dev_assets.o/installCFG.png?raw=true "Install CFG")
+
+OR
+
+Manual installation:
+
+Copy [gamestate_integration_d2reminders.cfg file](scripts.o/gamestate_integration_d2reminders.cfg) to dota2 cfg folder tipically:
+`C:/Program Files (x86)/Steam/Steamapps/Common/dota 2 beta/game/dota/cfg/gamestate_integration/` </br>
+Create the gamestate_integration folder if it doesn't exist.
 
 
 ## Roadmap
