@@ -96,9 +96,14 @@ const checkForDaytime = (isDaytime) => {
   }
 }
 
-const checkForRoshanWarnTime = (gameTime, deathTime) => {
-  const roshanMin = 469
-  const roshanMax = 659
+const checkForRoshanWarnTime = (gameTime, deathTime, isTurbo) => {
+  let roshanMin = 469
+  let roshanMax = 659
+
+  if (isTurbo) {
+    roshanMin = roshanMin/2
+    roshanMax = roshanMax/2
+  }
 
   if (deathTime + roshanMin === gameTime) {
     const filePath = path.join(__dirname, "../sound/roshanMin.mp3");
@@ -112,11 +117,18 @@ const checkForRoshanWarnTime = (gameTime, deathTime) => {
   }
 }
 
-checkForAegisWarnTime = (gameTime, deathTime) => {
-  const aegis2minWarnTime = 180
-  const aegis30sWarnTime = 271
-  const aegis10sWarnTime = 291
-  const aegisExpiredTime = 302
+checkForAegisWarnTime = (gameTime, deathTime, isTurbo) => {
+  let aegis2minWarnTime = 180
+  let aegis30sWarnTime = 271
+  let aegis10sWarnTime = 291
+  let aegisExpiredTime = 302
+
+  if (isTurbo) {
+    aegis2minWarnTime -= 60
+    aegis30sWarnTime -= 60
+    aegis10sWarnTime -= 60
+    aegisExpiredTime -= 60
+  }
 
   if (deathTime + aegis2minWarnTime === gameTime) {
     const filePath = path.join(__dirname, "../sound/aegis2min.mp3");
@@ -180,8 +192,9 @@ const checkForWisdomRunes = (gameTime) => {
   }
 }
 
-const checkForLotus = (gameTime) => {
-  const lotusTime = 180;
+const checkForLotus = (gameTime, isTurbo) => {
+  let lotusTime = 180;
+  if (isTurbo) lotusTime = 90
   const lotusDelay = store.handleStoreGet(null, "lotus").delay
   const lotusAlertTime = lotusTime - lotusDelay
 
@@ -202,8 +215,11 @@ const checkForBountyRunes = (gameTime) => {
   }
 }
 
-const checkNeutralItems = (gameTime) => {
-  const neutralItemsTime = [420, 1020, 1620, 2200, 3600]
+const checkNeutralItems = (gameTime, isTurbo) => {
+  let neutralItemsTime = [420, 1020, 1620, 2200, 3600]
+  if (isTurbo) {
+    neutralItemsTimeTurbo = neutralItemsTime.map(time => time / 2)
+  }
 
   for (let i = 0; i < neutralItemsTime.length; i++) {
     if (gameTime === neutralItemsTime[i]) {
@@ -269,6 +285,7 @@ const onNewGameEvent = async (gameEvent) => {
 
     if (LAST_GAME_TIME === gameTime) return
     if (LAST_GAME_TIME > gameTime) LAST_GAME_TIME = 0
+    isTurbo = STORE_DATA.turbo.active
 
     if (STORE_DATA.stack.active) {
       checkForStack(gameTime)
@@ -280,7 +297,7 @@ const onNewGameEvent = async (gameEvent) => {
       checkForBountyRunes(gameTime)
     }
     if (STORE_DATA.neutral.active) {
-      checkNeutralItems(gameTime)
+      checkNeutralItems(gameTime, isTurbo)
     }
     if (STORE_DATA.smoke.active) {
       checkForSmoke(gameTime)
@@ -298,16 +315,16 @@ const onNewGameEvent = async (gameEvent) => {
       checkForWisdomRunes(gameTime)
     }
     if (STORE_DATA.lotus.active) {
-      checkForLotus(gameTime)
+      checkForLotus(gameTime, isTurbo)
     }
     if (STORE_DATA.tormentor.active) {
       checkForFirstTormentor(gameTime)
     }
     if (ROSHAN_DEAD && STORE_DATA.roshan.active) {
-      checkForRoshanWarnTime(gameTime, ROSHAN_DEAD)
+      checkForRoshanWarnTime(gameTime, ROSHAN_DEAD, isTurbo)
     }
     if (AEGIS_PICKED && STORE_DATA.aegis.active) {
-      checkForAegisWarnTime(gameTime, AEGIS_PICKED)
+      checkForAegisWarnTime(gameTime, AEGIS_PICKED, isTurbo)
     }
 
     LAST_GAME_TIME = gameTime
