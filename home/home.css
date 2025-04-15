@@ -142,3 +142,18 @@ input[type="number"]
   display: flex;
   justify-content: space-around;
 }
+
+.reminder-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.checkbox-container.turbo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
